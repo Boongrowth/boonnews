@@ -9,10 +9,6 @@ cat << 'EOF' > ~/boonnews/vercel.json
     {
       "source": "/reader",
       "destination": "/api/reader"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
     }
   ]
 }
