@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Search Meta Tags -->
+    <title>Boon News | Latest News, Insights & In-Depth Reports</title>
+    <meta name="title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="keywords" content="Boon News, news, trending news, latest updates, blog, analysis, opinion">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://boonnews.vercel.app">
+
+    <!-- Open Graph / Social Media (Facebook, WhatsApp, LinkedIn, Telegram) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://boonnews.vercel.app">
+    <meta property="og:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta property="og:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta property="og:image" content="https://boonnews.vercel.app/boon-news-og-banner.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Boon News">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://boonnews.vercel.app">
+    <meta name="twitter:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="twitter:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="twitter:image" content="https://boonnews.vercel.app/boon-news-og-banner.jpg">
+
+    <!-- Stylesheets & Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR DRAWER OVERLAY & COMPONENT -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <aside class="sidebar-drawer" id="sidebarDrawer" aria-label="Sidebar Navigation">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">Boon<span>News</span></a>
+            <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close Sidebar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form class="sidebar-search" id="sidebarSearchForm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="sidebarSearchInput" placeholder="Search parameters...">
+        </form>
+
+        <nav>
+            <ul class="sidebar-nav-list">
+                <li><a href="index.html" class="sidebar-nav-link active">Home</a></li>
+                <li><a href="about.html" class="sidebar-nav-link">About Us Hub</a></li>
+                <li><a href="contact.html" class="sidebar-nav-link">Contact Us</a></li>
+                <li><a href="advert.html" class="sidebar-nav-link">Advertise</a></li>
+
+                <li><a href="signup.html" class="sidebar-nav-link">Create Account</a></li>
+            </ul>
+        </nav>
+
+        <!-- DYNAMIC SIDEBAR BOTTOM CONTAINER (AUTH / BALANCE) -->
+        <div class="sidebar-bottom-section">
+            <div id="sidebarAuthContainer">
+                <!-- Dynamically populated via Firebase Auth state -->
+            </div>
+
+            <ul class="sidebar-footer-socials">
+                <li><a href="#" class="sidebar-social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li>
+                <li><a href="#" class="sidebar-social-icon" aria-label="Discord"><i class="fa-brands fa-discord"></i></a></li>
+                <li><a href="#" class="sidebar-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="site-header">
+        <div class="header-container max-w-7xl">
+            <div class="header-left">
+                <button class="burger-btn" id="sidebarToggle" aria-label="Open Navigation Sidebar"><i class="fa-solid fa-bars"></i></button>
+                <a href="index.html" class="logo">Boon<span>News</span></a>
+                
+                <!-- Persistent Dynamic Search Box Component -->
+                <form class="header-search-box" id="searchForm">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search the multiverse..." autocomplete="off">
+                    <div id="searchSuggestions" class="search-suggestions-dropdown"></div>
+                </form>
+            </div>
+
+            <div class="header-center">
+                <nav class="main-nav">
+                    <ul style="display: flex; gap: 1.5rem;">
+                        <li><a href="index.html" class="nav-link active">Home</a></li>
+                        <li><a href="#" class="nav-link">Lifestyle</a></li>
+                        <li><a href="#" class="nav-link">Travel</a></li>
+                        <li><a href="#" class="nav-link">Post Type</a></li>
+                        <li><a href="#" class="nav-link">NFT</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="lang-selector">
+                    <span>ENG</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                </div>
+                <div class="header-icons">
+                    <a href="#" class="search-trigger-fallback" aria-label="Search Trigger"><i class="fa-solid fa-magnifying-glass"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- EXPLICIT SEARCH BOX SECTION AFTER HEADER -->
+    <section class="after-header-search-section">
+        <div class="max-w-7xl">
+            <form class="banner-search-form" id="bannerSearchForm">
+                <div class="banner-search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="bannerSearchInput" placeholder="Type keywords, topics or categories to search..." autocomplete="off">
+                </div>
+                <button type="submit" class="banner-search-btn">
+                    <span>                    <i class="fa-solid fa-magnifying-glass"></i></span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <main class="max-w-7xl">
+        
+        <!-- HERO GRID SECTION -->
+        <section class="hero-section" aria-label="Featured Stories Grid">
+            <div class="hero-left" id="heroLeftContainer">
+                <!-- Dynamically loaded via Firestore JS -->
+            </div>
+
+            <div class="hero-right" id="heroRightContainer">
+                <!-- Dynamically loaded via Firestore JS -->
+            </div>
+        </section>
+
+
+        <!-- TRENDING NEWS SECTION (POPULAR POSTS SLIDER) -->
+        <section style="margin-bottom: 3rem;">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Popular Posts</span>
+                    <h2>Trending News</h2>
+                </div>
+                <div class="section-header-right">
+                    <div class="slider-controls">
+                        <button id="prevBtn1" class="slider-btn" aria-label="Previous Post Track"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button id="nextBtn1" class="slider-btn" aria-label="Next Post Track"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <a href="#" class="more-link">
+                        <span>More Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <ul id="trendingContainer" class="slider-container">
+                <!-- Dynamically loaded via Firestore JS -->
+            </ul>
+        </section>
+
+
+        <!-- EDITOR CHOICE SECTION -->
+        <section class="editor-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Recommended</span>
+                    <h2>Editor Choice</h2>
+                </div>
+                <a href="#" class="more-link"><span>More Recommended Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+            </div>
+
+            <ul class="editor-grid" id="editorsChoiceContainer">
+                <!-- Dynamically loaded via Firestore JS -->
+            </ul>
+        </section>
+
+
+        <!-- RECENT VIDEO POST SECTION -->
+        <section class="video-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Video</span>
+                    <h2>Recent Video Post</h2>
+                </div>
+                <a href="#" class="more-link"><span>More Video Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+            </div>
+
+            <div class="video-grid" id="videoContainer">
+                <!-- Dynamically loaded via Firestore JS -->
+            </div>
+        </section>
+
+
+        <!-- LIGHT ACCENT SLIDER BAND (More to Watch Block) -->
+        <section class="dark-band-section">
+            <div class="max-w-7xl">
+                <div class="section-header" style="border-color: #cbd5e1;">
+                    <div class="section-header-left">
+                        <span class="text-accent sub-label" style="color: #64748b;">Recent Post</span>
+                        <h2>Latest Multiverse Feed</h2>
+                    </div>
+                    <div class="section-header-right">
+                        <div class="slider-controls">
+                            <button id="prevBtn2" class="slider-btn" style="border-color: #cbd5e1;" aria-label="Previous Watch Section"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="nextBtn2" class="slider-btn" style="border-color: #cbd5e1;" aria-label="Next Watch Section"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <a href="#" class="more-link"><span>Recent or Latest Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>
+                    </div>
+                </div>
+
+                <ul id="sliderContainer2" class="slider-container">
+                    <!-- Dynamically loaded via Firestore JS -->
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- POPULAR STORIES SECTION -->
+        <section class="stories-section">
+            <div class="section-header">
+                <div class="section-header-left">
+                    <span class="text-accent sub-label">Stories</span>
+                    <h2>Popular Stories</h2>
+                </div>
+                <div class="section-header-right">
+                    <select id="categoryFilter" class="category-select-filter" aria-label="Filter Stories by Category">
+                        <option value="ALL">All Categories</option>
+                    </select>
+                    <a href="#" class="more-link">
+                        <span>Stories Post</span> <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div id="recentStoriesContainer">
+                <!-- Dynamically loaded via Firestore JS -->
+            </div>
+        </section>
+
+
+        <!-- NEWSLETTER CARD CTA LAYOUT MODULE -->
+        <section class="newsletter-panel" aria-label="Newsletter Signup">
+            <div class="newsletter-left">
+                <h4>Newsletter</h4>
+                <h2>Get notified of the best deals on our WordPress Themes</h2>
+            </div>
+            
+            <div class="newsletter-right">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+                    <div class="email-field-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" placeholder="Email address" class="newsletter-input" aria-label="Email Address Field">
+                    </div>
+                    <label class="consent-label">
+                        <input type="checkbox">
+                        <span>I agree that my submitted data is being collected and stored.</span>
+                    </label>
+                </div>
+                <button class="newsletter-submit-btn">
+                    <span>Subscribe</span> <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- EXPANDED SEMANTIC FAT FOOTER SYSTEM -->
+    <footer class="site-footer">
+        <div class="max-w-7xl footer-grid">
+            <div class="footer-brand-column">
+                <h3><a href="index.html" class="logo">Boon<span>News</span></a></h3>
+                <p>Stay informed with Boon News, your hub for breaking Nigerian news, sharp commentary, and real-time trending updates.</p>
+            </div>
+            
+
+
+            <div class="footer-nav-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links-list">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="signup.html">Create Account</a></li>
+                    <li><a href="advert.html">Advertise with Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Legal Menu</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Connect Space</h4>
+                <ul class="footer-socials-list">
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow on X"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Join Discord Server"><i class="fa-brands fa-discord"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Watch on YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom max-w-7xl">
+            &copy; 2026 Boon News — The Heart of Nigerian News. All Rights Reserved.
+        </div>
+    </footer>
+
+
+    <!-- JS: SLIDERS & SIDEBAR CONTROL RIG -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // SIDEBAR TOGGLE MECHANICS
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            const sidebarDrawer = document.getElementById('sidebarDrawer');
+
+            const openSidebar = () => {
+                sidebarDrawer.classList.add('active');
+                sidebarBackdrop.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Lock base scroll
+            };
+
+            const closeSidebar = () => {
+                sidebarDrawer.classList.remove('active');
+                sidebarBackdrop.classList.remove('active');
+                document.body.style.overflow = ''; // Release scroll
+            };
+
+            if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+            if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+            if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+            // SLIDER CONTAINER LOGIC TRACKS
+            const setupSlider = (containerId, prevId, nextId) => {
+                const container = document.getElementById(containerId);
+                const prevBtn = document.getElementById(prevId);
+                const nextBtn = document.getElementById(nextId);
+
+                if (!container || !prevBtn || !nextBtn) return;
+
+                const getScrollAmount = () => {
+                    const firstCard = container.firstElementChild;
+                    return firstCard ? firstCard.offsetWidth + 20 : 280; 
+                };
+
+                nextBtn.addEventListener('click', () => {
+                    container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+                });
+            };
+
+            setupSlider('trendingContainer', 'prevBtn1', 'nextBtn1');
+            setupSlider('sliderContainer2', 'prevBtn2', 'nextBtn2');
+        });
+    </script>
+
+    <!-- FIRESTORE DATA MODULE & TEMPLATE RENDERER -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Dynamic SEO & Primary Meta Tags -->
+    <title id="metaTitle">Loading Article... | BoonNews</title>
+    <meta name="title" id="metaTitleTag" content="Loading Article... | BoonNews">
+    <meta name="description" id="metaDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta name="keywords" id="metaKeywords" content="BoonNews, news, breaking news, articles, insights, blog">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" id="metaCanonical" href="https://boonnews.vercel.app/reader.html">
+
+    <!-- Open Graph / WhatsApp / Facebook / LinkedIn -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BoonNews">
+    <meta property="og:url" id="ogUrl" content="https://boonnews.vercel.app/reader.html">
+    <meta property="og:title" id="ogTitle" content="BoonNews Article">
+    <meta property="og:description" id="ogDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta property="og:image" id="ogImage" content="https://boonnews.vercel.app/boon-news-og-banner.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" id="twUrl" content="https://boonnews.vercel.app/reader.html">
+    <meta name="twitter:title" id="twTitle" content="BoonNews Article">
+    <meta name="twitter:description" id="twDesc" content="Read full news articles, analysis, and breaking updates on BoonNews.">
+    <meta name="twitter:image" id="twImage" content="https://boonnews.vercel.app/boon-news-og-banner.jpg">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json" id="articleSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Read Article",
+      "image": ["https://boonnews.vercel.app/boon-news-og-banner.jpg"],
+      "publisher": {
+        "@type": "Organization",
+        "name": "BoonNews",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://boonnews.vercel.app/boon-news-og-banner.jpg"
+        }
+      }
+    }
+    </script>
+
+    <!-- Icon Font Library Asset -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 8px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        /* Navbar Layout */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 4px;
+            width: 100%;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            background-color: rgba(248, 250, 252, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+
+        .brand-logo {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            color: #2563eb;
+        }
+
+        /* Breadcrumbs Navigation */
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .breadcrumb-nav a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+        .breadcrumb-current {
+            color: #64748b;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        /* Split Screen Responsive Grid */
+        .main-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .content-stream, .sidebar-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Card Panels */
+        .post-card, .sidebar-card, .newsletter-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .post-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Media Hero Wrapper */
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            border: 1px solid #e2e8f0;
+            background-color: #f1f5f9;
+        }
+
+        .article-featured-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-responsive {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Header Meta */
+        .post-meta-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+        }
+
+        .category-badge {
+            color: #2563eb;
+            background-color: #eff6ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .article-meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .meta-item-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item-tag i {
+            color: #2563eb;
+        }
+
+        .post-title {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.35;
+            letter-spacing: -0.3px;
+            color: #0f172a;
+        }
+
+        /* Reader Utility Bar */
+        .reader-utility-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8fafc;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .font-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .font-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .font-btn:hover {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+
+        /* Author Panel Box */
+        .author-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .author-main-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+            border: 2px solid #3b82f6;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .author-name {
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .author-role {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .author-socials {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .author-social-link {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .author-social-link:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .bookmark-btn {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-btn:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+        .bookmark-btn.active {
+            color: #dc2626;
+            background-color: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        /* Article Body Prose */
+        .article-body {
+            font-size: 16px;
+            line-height: 1.75;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            transition: font-size 0.2s ease;
+        }
+
+        .article-summary-lead {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #475569;
+            line-height: 1.6;
+            border-left: 3px solid #2563eb;
+            padding-left: 12px;
+        }
+
+        .article-body p {
+            margin-bottom: 4px;
+        }
+
+        .article-body blockquote {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+            font-style: italic;
+            color: #1e3e6d;
+        }
+
+        .article-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        /* Tag Cloud */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .tag-item {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 16px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag-item:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: 4px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .share-section.bottom-bar {
+            margin-top: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .share-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .share-icon-btn {
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .share-icon-btn:hover {
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .share-icon-btn.fb:hover { background-color: #1877f2; border-color: #1877f2; }
+        .share-icon-btn.tw:hover { background-color: #000000; border-color: #000000; }
+        .share-icon-btn.wa:hover { background-color: #25d366; border-color: #25d366; }
+        .share-icon-btn.in:hover { background-color: #0a66c2; border-color: #0a66c2; }
+        .share-icon-btn.copy:hover { background-color: #2563eb; border-color: #2563eb; }
+
+        /* Newsletter Card */
+        .newsletter-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .newsletter-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .newsletter-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .newsletter-subtitle {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .form-input-control {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            color: #0f172a;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input-control:focus {
+            border-color: #2563eb;
+        }
+
+        .form-submit-btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-submit-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Sidebar Component */
+        .sidebar-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .related-post-node {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .related-post-node:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .related-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            background-color: #e2e8f0;
+        }
+
+        .related-meta h4 {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #1e293b;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .related-post-node:hover .related-meta h4 {
+            color: #2563eb;
+        }
+
+        .related-meta p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Footer Element */
+        .app-footer {
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 32px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: #475569;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #2563eb;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #2563eb;
+        }
+
+        /* Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 16px;
+                background-color: #ffffff;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                flex-direction: column;
+                width: 200px;
+                padding: 16px;
+                border-radius: 12px;
+                z-index: 1001;
+                gap: 14px;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .post-title {
+                font-size: 22px;
+            }
+        }
+
+        @media (min-width: 480px) {
+            .newsletter-form {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .main-layout-grid {
+                grid-template-columns: 2.2fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Navbar Header Component -->
+        <header class="navbar">
+            <div class="brand-logo">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    BoonNews
+                </button>
+            </div>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="index.html?category=Trending">Trending</a>
+                <a href="index.html?category=Politics">Politics</a>
+                <a href="index.html?category=Business">Business</a>
+                <a href="index.html?category=Technology">Technology</a>
+            </nav>
+            <div class="menu-btn" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
+
+        <!-- Breadcrumbs Navigation -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <a href="#" id="breadcrumbCategory">Category</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <span class="breadcrumb-current" id="breadcrumbTitle">Loading Story...</span>
+        </nav>
+
+        <!-- Main Layout Multi-Column Split Framework -->
+        <div class="main-layout-grid">
+            
+            <!-- Content Stream Column -->
+            <div class="content-stream">
+                
+                <!-- Main Post Card -->
+                <main class="post-card">
+                    <div class="post-meta-header">
+                        <div class="meta-left">
+                            <span class="category-badge" id="articleCategory">General</span>
+                        </div>
+                    </div>
+
+                    <h1 class="post-title" id="articleTitle">Loading Story...</h1>
+
+                    <!-- Reader Control Bar -->
+                    <div class="reader-utility-bar">
+                        <span>Text Size</span>
+                        <div class="font-controls">
+                            <button class="font-btn" onclick="adjustFontSize(-1)" title="Decrease font size">A-</button>
+                            <button class="font-btn" onclick="adjustFontSize(1)" title="Increase font size">A+</button>
+                        </div>
+                    </div>
+
+                    <!-- Top Share Toolbar -->
+                    <div class="share-section">
+                        <div class="share-title"><i class="fa-solid fa-share-nodes me-1"></i> SHARE</div>
+                        <div class="share-buttons">
+                            <a href="#" id="shareWA" target="_blank" rel="noopener noreferrer" class="share-icon-btn wa" title="Share on WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                            </a>
+                            <a href="#" id="shareTW" target="_blank" rel="noopener noreferrer" class="share-icon-btn tw" title="Share on X">
+                                <i class="fa-brands fa-x-twitter"></i> Post
+                            </a>
+                            <a href="#" id="shareFB" target="_blank" rel="noopener noreferrer" class="share-icon-btn fb" title="Share on Facebook">
+                                <i class="fa-brands fa-facebook-f"></i> Share
+                            </a>
+                            <a href="#" id="shareLN" target="_blank" rel="noopener noreferrer" class="share-icon-btn in" title="Share on LinkedIn">
+                                <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+                            </a>
+                            <button class="share-icon-btn copy" onclick="copyArticleLink('copyBtnText')" title="Copy Link">
+                                <i class="fa-solid fa-link"></i> <span id="copyBtnText">Copy Link</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Author Panel -->
+                    <div class="author-panel">
+                        <div class="author-main-row">
+                            <div class="author-info">
+                                <div class="author-avatar" id="authorAvatar">BN</div>
+                                <div class="author-details">
+                                    <div class="author-name" id="authorName">Editorial</div>
+                                    <div class="author-role" id="authorRole">Editorial Desk</div>
+                                </div>
+                            </div>
+                            <!-- Bookmark Toggle Button -->
+                            <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Bookmark Post">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                            </button>
+                        </div>
+                        <div class="author-socials">
+                            <a href="#" class="author-social-link" title="Facebook" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="author-social-link" title="X (Twitter)" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#" class="author-social-link" title="Instagram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="author-social-link" title="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Hero Asset Wrapper -->
+                    <div class="media-container" id="mediaContainer">
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #64748b;">
+                            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                        </div>
+                    </div>
+
+                    <!-- Post Metadata Bar -->
+                    <div class="post-meta-header">
+                        <div class="article-meta-tags">
+                            <span class="meta-item-tag"><i class="fa-regular fa-calendar"></i> <span id="articleDate">--</span></span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-clock"></i> <span id="articleReadTime">1</span> min read</span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-eye"></i> <span id="articleViews">0</span> views</span>
+                        </div>
+                    </div>
+
+                    <!-- Article Body -->
+                    <div class="article-body" id="articleBody">
+                        <p class="article-summary-lead" id="articleSummary"></p>
+                        <div id="articleContent">
+                            Loading article text...
+                        </div>
+                    </div>
+
+                    <!-- Bottom Share Toolbar -->
+                    <div class="share-section bottom-bar">
+                        <div class="share-title">Enjoyed this story? Share it:</div>
+                        <div class="share-buttons">
+                            <a href="#" id="shareWABottom" target="_blank" rel="noopener noreferrer" class="share-icon-btn wa" title="Share on WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                            </a>
+                            <a href="#" id="shareTWBottom" target="_blank" rel="noopener noreferrer" class="share-icon-btn tw" title="Share on X">
+                                <i class="fa-brands fa-x-twitter"></i> Post
+                            </a>
+                            <a href="#" id="shareFBBottom" target="_blank" rel="noopener noreferrer" class="share-icon-btn fb" title="Share on Facebook">
+                                <i class="fa-brands fa-facebook-f"></i> Share
+                            </a>
+                            <button class="share-icon-btn copy" onclick="copyArticleLink('copyBtnTextBottom')" title="Copy Link">
+                                <i class="fa-solid fa-link"></i> <span id="copyBtnTextBottom">Copy Link</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Tag Cloud -->
+                    <div class="tag-cloud" id="articleTags">
+                        <span class="tag-item">#News</span>
+                        <span class="tag-item">#Updates</span>
+                    </div>
+
+                </main>
+
+                <!-- Newsletter Subscription Card -->
+                <section class="newsletter-card">
+                    <div class="newsletter-header">
+                        <h4 class="newsletter-title">Subscribe to Our Newsletter</h4>
+                        <p class="newsletter-subtitle">Get breaking news, featured analyses, and daily roundups straight to your inbox.</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Enter your email address" class="form-input-control" style="flex: 1;" required>
+                        <button type="submit" class="form-submit-btn" style="white-space: nowrap; align-self: auto;">Subscribe</button>
+                    </form>
+                    <div id="newsletterSuccess" style="display:none; font-size: 13px; color: #16a34a; font-weight: 500;">Thanks for subscribing! Check your inbox soon.</div>
+                </section>
+
+            </div>
+
+            <!-- Sidebar Context Stream Column -->
+            <aside class="sidebar-stream">
+                
+                <!-- Related Publications Panel -->
+                <div class="sidebar-card">
+                    <h2>Related News</h2>
+                    <div id="relatedContainer">
+                        <p style="font-size:13px; color:#64748b;">Loading related stories...</p>
+                    </div>
+                </div>
+
+                <!-- Trending Topics Cloud Panel -->
+                <div class="sidebar-card">
+                    <h2>Trending Topics</h2>
+                    <div class="tag-cloud" style="border-top: none; padding-top: 0; margin-top: 0;">
+                        <a href="index.html?tag=AI" class="tag-item">AI</a>
+                        <a href="index.html?tag=Crypto" class="tag-item">Crypto</a>
+                        <a href="index.html?tag=Startups" class="tag-item">Startups</a>
+                        <a href="index.html?tag=Tech" class="tag-item">Tech</a>
+                        <a href="index.html?tag=Business" class="tag-item">Business</a>
+                        <a href="index.html?tag=Sports" class="tag-item">Sports</a>
+                        <a href="index.html?tag=Politics" class="tag-item">Politics</a>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification Display -->
+    <div class="toast-notification" id="toast">Link copied to clipboard!</div>
+
+    <!-- Layout Base Footer Element Block -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <h2 class="brand-logo" style="font-size: 20px;">BoonNews</h2>
+            <p class="footer-text" style="max-width: 400px; margin-bottom: 8px;">Modern responsive news and blog platform designed for speed, beauty, and engagement.</p>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="footer-text" style="margin-top: 12px; font-size: 11px; color: #94a3b8;">© 2026 BoonNews Asset Distribution Platforms. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Navigation & UI Logic -->
+    <script>
+        /* Navigation Drawer Toggle */
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        /* Font Size Adjustment Controls */
+        let currentFontSize = 16;
+        function adjustFontSize(delta) {
+            currentFontSize = Math.min(Math.max(14, currentFontSize + delta), 22);
+            document.getElementById('articleBody').style.fontSize = currentFontSize + 'px';
+        }
+
+        /* Toast Alert Display Utility */
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        /* Reading Progress Bar Engine */
+        const progressBar = document.createElement('div');
+        progressBar.style.position = 'fixed';
+        progressBar.style.top = '0';
+        progressBar.style.left = '0';
+        progressBar.style.height = '4px';
+        progressBar.style.background = '#2563eb';
+        progressBar.style.width = '0%';
+        progressBar.style.zIndex = '9999';
+        progressBar.style.boxShadow = '0 0 8px rgba(37, 99, 235, 0.4)';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = document.documentElement.scrollTop;
+            let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let progress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = (progress || 0) + '%';
+        });
+
+        /* Link Copy Engine */
+        window.copyArticleLink = (targetLabelId) => {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast("Article link copied to clipboard!");
+                if (targetLabelId) {
+                    const labelEl = document.getElementById(targetLabelId);
+                    if (labelEl) {
+                        const originalText = labelEl.innerText;
+                        labelEl.innerText = "Copied!";
+                        setTimeout(() => { labelEl.innerText = originalText; }, 2000);
+                    }
+                }
+            }).catch(err => {
+                console.error("Could not copy link: ", err);
+            });
+        };
+    </script>
+
+    <!-- Firebase Firestore Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { 
+            getFirestore, doc, getDoc, collection, getDocs, query, where, limit, updateDoc, increment 
+        } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+            authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+            databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+            projectId: "primeintelmedia-e2fe3",
+            storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+            messagingSenderId: "228866357632",
+            appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+            measurementId: "G-G0HRRV932S"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const FALLBACK_IMG = 'https://boonnews.vercel.app/boon-news-og-banner.jpg';
+
+        function getEmbedUrl(url) {
+            if (!url) return '';
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) 
+                ? `https://www.youtube.com/embed/${match[2]}` 
+                : url;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // Check local storage for bookmark state
+        function initBookmarkState() {
+            if (!postId) return;
+            const bookmarks = JSON.parse(localStorage.getItem('boon_bookmarks') || '[]');
+            const btn = document.getElementById('bookmarkBtn');
+            if (btn && bookmarks.includes(postId)) {
+                btn.classList.add('active');
+            }
+        }
+
+        window.toggleBookmark = () => {
+            if (!postId) return;
+            let bookmarks = JSON.parse(localStorage.getItem('boon_bookmarks') || '[]');
+            const btn = document.getElementById('bookmarkBtn');
+            
+            if (bookmarks.includes(postId)) {
+                bookmarks = bookmarks.filter(id => id !== postId);
+                if (btn) btn.classList.remove('active');
+                showToast("Removed from bookmarks.");
+            } else {
+                bookmarks.push(postId);
+                if (btn) btn.classList.add('active');
+                showToast("Added to bookmarks!");
+            }
+            localStorage.setItem('boon_bookmarks', JSON.stringify(bookmarks));
+        };
+
+        // Estimate reading time from text body
+        function calculateReadingTime(text) {
+            const wordsPerMinute = 200;
+            const cleanText = text.replace(/<[^>]*>/g, '');
+            const words = cleanText.trim().split(/\s+/).length;
+            return Math.max(1, Math.ceil(words / wordsPerMinute));
+        }
+
+        async function loadArticle() {
+            if (!postId) {
+                document.getElementById("articleTitle").textContent = "Article Not Found";
+                document.getElementById("articleContent").textContent = "No post ID specified in URL parameter.";
+                return;
+            }
+
+            initBookmarkState();
+
+            try {
+                const docRef = doc(db, "newsPosts", postId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    document.getElementById("articleTitle").textContent = "Article Not Found";
+                    document.getElementById("articleContent").textContent = "The requested story does not exist or has been removed.";
+                    return;
+                }
+
+                const post = docSnap.data();
+
+                // Increment View Counter in Firestore
+                updateDoc(docRef, { views: increment(1) }).catch(e => console.warn("View increment failed", e));
+
+                // Process Article Data
+                const title = post.title || 'Untitled Article';
+                const category = post.category || 'General';
+                const summary = post.summary || (post.content ? post.content.replace(/<[^>]*>?/gm, '').substring(0, 155) : 'Read article on BoonNews.');
+                const content = post.content || `<p>${summary}</p>`;
+                const views = (post.views || 0) + 1;
+                const readTime = post.minutesRead || calculateReadingTime(content);
+                const author = post.authorName || post.author || 'Editorial';
+                
+                let dateStr = 'Recently';
+                if (post.createdAt) {
+                    const rawTime = post.createdAt.toMillis ? post.createdAt.toMillis() : (post.createdAt.toDate ? post.createdAt.toDate() : post.createdAt);
+                    dateStr = new Date(rawTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+
+                // Render Text Content
+                document.getElementById("articleTitle").textContent = title;
+                document.getElementById("articleCategory").textContent = category;
+                document.getElementById("breadcrumbCategory").textContent = category;
+                document.getElementById("breadcrumbCategory").href = `index.html?category=${encodeURIComponent(category)}`;
+                document.getElementById("breadcrumbTitle").textContent = title;
+                
+                if (summary) {
+                    document.getElementById("articleSummary").textContent = summary;
+                } else {
+                    document.getElementById("articleSummary").style.display = "none";
+                }
+
+                document.getElementById("articleContent").innerHTML = content;
+                document.getElementById("articleViews").textContent = views.toLocaleString();
+                document.getElementById("articleReadTime").textContent = readTime;
+                document.getElementById("articleDate").textContent = dateStr;
+
+                // Render Author Details
+                document.getElementById("authorName").textContent = author;
+                if (post.authorImageUrl) {
+                    document.getElementById("authorAvatar").innerHTML = `<img src="${post.authorImageUrl}" alt="${author}">`;
+                } else {
+                    const initials = author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    document.getElementById("authorAvatar").textContent = initials;
+                }
+                if (post.authorRole) {
+                    document.getElementById("authorRole").textContent = post.authorRole;
+                }
+
+                // Render Dynamic Tags
+                if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
+                    document.getElementById("articleTags").innerHTML = post.tags.map(t => `<a href="index.html?tag=${encodeURIComponent(t)}" class="tag-item">#${t}</a>`).join('');
+                } else {
+                    document.getElementById("articleTags").innerHTML = `<a href="index.html?category=${encodeURIComponent(category)}" class="tag-item">#${category}</a><span class="tag-item">#News</span>`;
+                }
+
+                // SEO & Schema Updates
+                setupSEO(title, summary, post.imageUrl, category, author);
+
+                // Render Featured Media (Video / Image)
+                const mediaContainer = document.getElementById("mediaContainer");
+                if (post.videoUrl || post.postType === 'video') {
+                    const embedUrl = getEmbedUrl(post.videoUrl);
+                    mediaContainer.innerHTML = `
+                        <div class="video-responsive">
+                            <iframe src="${embedUrl}" allowfullscreen title="Video player"></iframe>
+                        </div>`;
+                } else {
+                    const imgUrl = post.imageUrl || FALLBACK_IMG;
+                    mediaContainer.innerHTML = `<img class="article-featured-img" src="${imgUrl}" alt="${title}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">`;
+                }
+
+                // Bind Social Share Links across Top & Bottom toolbars
+                setupShareLinks(title);
+
+                // Load Related Articles
+                fetchRelatedArticles(category, postId);
+
+            } catch (err) {
+                console.error("Error reading article:", err);
+                document.getElementById("articleTitle").textContent = "Error Loading Article";
+                document.getElementById("articleContent").textContent = "An error occurred while loading this post. Please check your internet connection.";
+            }
+        }
+
+        function setupSEO(title, summary, imageUrl, category, author) {
+            const pageUrl = window.location.href;
+            const cleanTitle = `${title} | BoonNews`;
+            const cleanDesc = summary || "Read this article on BoonNews.";
+            const img = imageUrl || FALLBACK_IMG;
+
+            document.title = cleanTitle;
+
+            const setMeta = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.setAttribute("content", val);
+            };
+
+            setMeta("metaTitleTag", cleanTitle);
+            setMeta("metaDesc", cleanDesc);
+            setMeta("metaKeywords", `${category}, news, updates, articles, BoonNews`);
+
+            setMeta("ogUrl", pageUrl);
+            setMeta("ogTitle", cleanTitle);
+            setMeta("ogDesc", cleanDesc);
+            setMeta("ogImage", img);
+
+            setMeta("twUrl", pageUrl);
+            setMeta("twTitle", cleanTitle);
+            setMeta("twDesc", cleanDesc);
+            setMeta("twImage", img);
+
+            const canonical = document.getElementById("metaCanonical");
+            if (canonical) canonical.setAttribute("href", pageUrl);
+
+            // Update Schema.org JSON-LD
+            const schemaEl = document.getElementById("articleSchema");
+            if (schemaEl) {
+                schemaEl.textContent = JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "NewsArticle",
+                    "headline": title,
+                    "image": [img],
+                    "description": cleanDesc,
+                    "author": {
+                        "@type": "Person",
+                        "name": author
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "BoonNews",
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": "https://boonnews.vercel.app/boon-news-og-banner.jpg"
+                        }
+                    }
+                });
+            }
+        }
+
+        function setupShareLinks(title) {
+            const pageUrl = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(title);
+
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+            const twUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${text}`;
+            const lnUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+            const waUrl = `https://api.whatsapp.com/send?text=${text}%20${pageUrl}`;
+
+            // Bind Top Toolbar
+            document.getElementById("shareFB").href = fbUrl;
+            document.getElementById("shareTW").href = twUrl;
+            document.getElementById("shareLN").href = lnUrl;
+            document.getElementById("shareWA").href = waUrl;
+
+            // Bind Bottom Toolbar
+            document.getElementById("shareFBBottom").href = fbUrl;
+            document.getElementById("shareTWBottom").href = twUrl;
+            document.getElementById("shareWABottom").href = waUrl;
+        }
+
+        async function fetchRelatedArticles(category, currentId) {
+            const container = document.getElementById("relatedContainer");
+            try {
+                const q = query(
+                    collection(db, "newsPosts"),
+                    where("category", "==", category),
+                    limit(4)
+                );
+                const querySnapshot = await getDocs(q);
+
+                let related = [];
+                querySnapshot.forEach((docSnap) => {
+                    if (docSnap.id !== currentId) {
+                        related.push({ id: docSnap.id, ...docSnap.data() });
+                    }
+                });
+
+                if (related.length === 0) {
+                    const fallbackQ = query(collection(db, "newsPosts"), limit(4));
+                    const fallbackSnap = await getDocs(fallbackQ);
+                    fallbackSnap.forEach((docSnap) => {
+                        if (docSnap.id !== currentId && related.length < 3) {
+                            related.push({ id: docSnap.id, ...docSnap.data() });
+                        }
+                    });
+                }
+
+                if (related.length === 0) {
+                    container.innerHTML = `<p style="font-size:13px; color:#64748b;">No related stories found.</p>`;
+                    return;
+                }
+
+                container.innerHTML = related.slice(0, 3).map(post => `
+                    <a class="related-post-node" href="reader.html?id=${post.id}">
+                        <img class="related-thumb" src="${post.imageUrl || FALLBACK_IMG}" alt="${post.title || 'Related post'}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}';">
+                        <div class="related-meta">
+                            <h4>${post.title || 'Untitled Article'}</h4>
+                            <p>${post.minutesRead || 1} min read</p>
+                        </div>
+                    </a>
+                `).join('');
+
+            } catch (err) {
+                console.error("Error loading related news:", err);
+                container.innerHTML = `<p style="font-size:13px; color:#64748b;">Could not load related stories.</p>`;
+            }
+        }
+
+        // Newsletter Form Binding
+        document.getElementById("newsletterForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            document.getElementById("newsletterSuccess").style.display = "block";
+            e.target.reset();
+        });
+
+        loadArticle();
+    </script>
+</body>
+</html>

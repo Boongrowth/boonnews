@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Results - Boonnews</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    body {
+      background: #f4f7fb;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .search-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 2rem 0;
+    }
+
+    .search-input-group {
+      display: flex;
+      border-radius: 50px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      max-width: 600px;
+    }
+
+    .search-input-group:focus-within {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+      background: #fff;
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      padding: 0.65rem 1.25rem;
+      outline: none;
+      box-shadow: none !important;
+    }
+
+    .search-btn {
+      border: none;
+      background: #0d6efd;
+      color: #fff;
+      padding: 0.65rem 1.5rem;
+      font-weight: 600;
+    }
+
+    .result-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .result-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #eaeaea;
+    }
+
+    .badge-category {
+      background: #eef5ff;
+      color: #0d6efd;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <i class="fa fa-newspaper me-2"></i>boonNews
+    </a>
+    <a href="index.html" class="btn btn-outline-light btn-sm"><i class="fa fa-arrow-left me-1"></i> Back to Home</a>
+  </div>
+</nav>
+
+<!-- SEARCH HEADER -->
+<div class="search-header">
+  <div class="container">
+    <form id="searchPageForm" class="search-input-group mb-3">
+      <input type="text" id="searchPageInput" class="form-control search-input" placeholder="Type query to search..." autocomplete="off">
+      <button type="submit" class="search-btn"><i class="fa fa-search me-1"></i> Search</button>
+    </form>
+    <div id="searchMeta" class="text-muted fs-6"></div>
+  </div>
+</div>
+
+<!-- RESULTS CONTAINER -->
+<div class="container my-5">
+  <div class="row g-4" id="resultsGrid">
+    <div class="text-center text-muted py-5">
+      <div class="spinner-border text-primary me-2"></div> Searching articles...
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+  import { 
+    getFirestore, collection, getDocs, query, orderBy 
+  } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+  authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+  databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+  projectId: "primeintelmedia-e2fe3",
+  storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+  messagingSenderId: "228866357632",
+  appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+  measurementId: "G-G0HRRV932S"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const FALLBACK_IMG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400"><rect width="100%" height="100%" fill="%23eaeaea"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="20">Media Asset Unavailable</text></svg>';
+
+  const urlParams = new URLSearchParams(window.location.search);
+  let currentQuery = urlParams.get('q') || '';
+
+  const inputEl = document.getElementById("searchPageInput");
+  const formEl = document.getElementById("searchPageForm");
+  const metaEl = document.getElementById("searchMeta");
+  const gridEl = document.getElementById("resultsGrid");
+
+  inputEl.value = currentQuery;
+
+  formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const term = inputEl.value.trim();
+    if (term) {
+      window.location.href = `search.html?q=${encodeURIComponent(term)}`;
+    }
+  });
+
+  window.navigateToArticle = (id) => {
+    window.location.href = `articleview.html?id=${id}`;
+  };
+
+  async function executeSearch() {
+    if (!currentQuery.trim()) {
+      metaEl.innerText = "Please enter a search phrase above.";
+      gridEl.innerHTML = `<div class="col-12 text-center text-muted py-5">No search query provided.</div>`;
+      return;
+    }
+
+    try {
+      const q = query(collection(db, "newsPosts"), orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+
+      const allPosts = [];
+      querySnapshot.forEach((docSnap) => {
+        allPosts.push({ id: docSnap.id, ...docSnap.data() });
+      });
+
+      const term = currentQuery.toLowerCase().trim();
+      const results = allPosts.filter(post => {
+        const title = (post.title || "").toLowerCase();
+        const category = (post.category || "").toLowerCase();
+        const summary = (post.summary || "").toLowerCase();
+        return title.includes(term) || category.includes(term) || summary.includes(term);
+      });
+
+      metaEl.innerHTML = `Found <strong>${results.length}</strong> result${results.length === 1 ? '' : 's'} for "<strong>${escapeHtml(currentQuery)}</strong>"`;
+
+      if (results.length === 0) {
+        gridEl.innerHTML = `
+          <div class="col-12 text-center py-5">
+            <i class="fa fa-search-minus text-muted fa-3x mb-3"></i>
+            <h5 class="fw-bold">No matching articles found</h5>
+            <p class="text-muted">Try rephrasing your search or checking for spelling errors.</p>
+          </div>`;
+        return;
+      }
+
+      gridEl.innerHTML = results.map(post => `
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="result-card shadow-sm" onclick="navigateToArticle('${post.id}')">
+            <img src="${post.imageUrl || FALLBACK_IMG}" onerror="this.onerror=null; this.src=FALLBACK_IMG;" alt="${escapeHtml(post.title)}">
+            <div class="p-3 d-flex flex-column h-100">
+              <div>
+                <span class="badge-category mb-2 d-inline-block">${post.category || 'News'}</span>
+                <h5 class="fw-bold mb-2" style="font-size: 16px; line-height: 1.3;">${post.title}</h5>
+                <p class="text-muted small mb-3">${post.summary ? post.summary.substring(0, 90) + '...' : ''}</p>
+              </div>
+              <div class="mt-auto pt-2 border-top text-muted small d-flex justify-content-between align-items-center">
+                <span><i class="far fa-clock me-1"></i>${post.minutesRead || 1}m read</span>
+                <span class="text-primary fw-bold">Read More →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+    } catch (err) {
+      console.error("Search fetch error:", err);
+      gridEl.innerHTML = `<div class="col-12 text-center text-danger py-5">Failed to retrieve search results. Please try again.</div>`;
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  executeSearch();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Dynamic SEO & Primary Meta Tags -->
+    <title id="metaTitle">Loading Article... | BoonNews</title>
+    <meta name="title" id="metaTitleTag" content="Loading Article... | BoonNews">
+    <meta name="description" id="metaDesc" content="Read the latest updates and stories on BoonNews.">
+    <meta name="keywords" id="metaKeywords" content="news, updates, articles">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" id="ogUrl" content="">
+    <meta property="og:title" id="ogTitle" content="BoonNews Article">
+    <meta property="og:description" id="ogDesc" content="">
+    <meta property="og:image" id="ogImage" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" id="twUrl" content="">
+    <meta property="twitter:title" id="twTitle" content="BoonNews Article">
+    <meta property="twitter:description" id="twDesc" content="">
+    <meta property="twitter:image" id="twImage" content="">
+
+    <!-- Icon Font Library Asset -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* Base Reset & Light Theme Styling Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Responsive Layout Grid Container Setup */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 8px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        /* Navbar Layout styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 4px;
+            width: 100%;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .brand-logo {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            color: #2563eb;
+        }
+
+        /* Breadcrumbs Navigation Styling */
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .breadcrumb-nav a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+        .breadcrumb-current {
+            color: #64748b;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        /* Split Screen Responsive Grid Core Architecture */
+        .main-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            width: 100%;
+        }
+
+        /* Stream Containers */
+        .content-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Card Panels Light Theme Specifications */
+        .post-card, .sidebar-card, .post-cta-container, .newsletter-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .post-card {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* Media Container Hero Engine Wrapper */
+        .media-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            border: 1px solid #e2e8f0;
+            background-color: #f1f5f9;
+        }
+
+        .article-featured-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-responsive {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Category & Meta Panel Layout */
+        .post-meta-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+        }
+
+        .meta-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-badge {
+            color: #2563eb;
+            background-color: #eff6ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .article-meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .meta-item-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item-tag i {
+            color: #2563eb;
+        }
+
+        .post-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.35;
+            letter-spacing: -0.3px;
+            color: #0f172a;
+        }
+
+        /* Author Profile Panel Box Module */
+        .author-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .author-main-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+            border: 2px solid #3b82f6;
+            object-fit: cover;
+        }
+
+        .author-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .author-name {
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .author-role {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .author-socials {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .author-social-link {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .author-social-link:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .bookmark-btn {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-btn:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+        }
+
+        .bookmark-btn.active {
+            color: #dc2626;
+            background-color: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        /* Article Prose Elements */
+        .article-body {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .article-summary-lead {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .article-body blockquote {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 8px 0;
+            font-style: italic;
+            color: #1e3e6d;
+        }
+
+        /* Tag Cloud Components */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .tag-item {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 16px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag-item:hover {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* Share Area Custom UI Module */
+        .share-section {
+            margin-top: 4px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .share-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .share-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .share-icon-btn {
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .share-icon-btn:hover {
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .share-icon-btn.fb:hover { background-color: #1877f2; border-color: #1877f2; }
+        .share-icon-btn.tw:hover { background-color: #000000; border-color: #000000; }
+        .share-icon-btn.wa:hover { background-color: #25d366; border-color: #25d366; }
+        .share-icon-btn.in:hover { background-color: #0a66c2; border-color: #0a66c2; }
+        .share-icon-btn.copy:hover { background-color: #2563eb; border-color: #2563eb; }
+
+        /* STANDALONE OUTER CONTENT STREAM CARDS */
+        .newsletter-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .newsletter-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .newsletter-title {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            color: #0f172a;
+        }
+
+        .newsletter-subtitle {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .form-input-control {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            color: #0f172a;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input-control:focus {
+            border-color: #2563eb;
+        }
+
+        .form-submit-btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-submit-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* SIDEBAR COMPONENT DESIGN MODULES */
+        .sidebar-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .related-post-node {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .related-post-node:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .related-thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .related-meta h4 {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #1e293b;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .related-post-node:hover .related-meta h4 {
+            color: #2563eb;
+        }
+
+        .related-meta p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* Layout Footer Asset */
+        .app-footer {
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 32px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: #475569;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #2563eb;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #2563eb;
+        }
+
+        /* RESPONSIVE LAYOUT ENGINE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 65px;
+                right: 20px;
+                background-color: #ffffff;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                flex-direction: column;
+                width: 200px;
+                padding: 16px;
+                border-radius: 12px;
+                z-index: 1001;
+                gap: 14px;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+        }
+
+        @media (min-width: 480px) {
+            .newsletter-form {
+                flex-direction: row;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .main-layout-grid {
+                grid-template-columns: 2.2fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Contextual Navigation Header Block Component -->
+        <header class="navbar">
+            <div class="brand-logo">
+                <button class="back-btn" onclick="window.location.href='index.html'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    BoonNews
+                </button>
+            </div>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="#">Trending</a>
+                <a href="#">Politics</a>
+                <a href="#">Business</a>
+                <a href="#">Technology</a>
+                <a href="#">Contact</a>
+            </nav>
+            <div class="menu-btn" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </header>
+
+        <!-- Top Breadcrumbs Navigation Bar -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <a href="#" id="breadcrumbCategory">Category</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <span class="breadcrumb-current" id="breadcrumbTitle">Loading Story...</span>
+        </nav>
+
+        <!-- Main Layout Multi-Column Split Framework -->
+        <div class="main-layout-grid">
+            
+            <!-- Left Grid Pipeline: Content Stream Cards -->
+            <div class="content-stream">
+                
+                <!-- Main Core Card Block -->
+                <main class="post-card">
+                    <div class="post-meta-header">
+                        <div class="meta-left">
+                            <span class="category-badge" id="articleCategory">General</span>
+                        </div>
+                    </div>
+
+                    <h1 class="post-title" id="articleTitle">Loading Story...</h1>
+
+                    <!-- Author Panel with Social Links -->
+                    <div class="author-panel">
+                        <div class="author-main-row">
+                            <div class="author-info">
+                                <div class="author-avatar" id="authorAvatar">BN
+                      </div>
+                                <div class="author-details">
+                                    <div class="author-name" id="authorName">BN Reporter</div>
+                                    <div class="author-role" id="authorRole">Editorial Desk</div>
+                                </div>
+                            </div>
+                            <!-- Bookmark Toggle Button -->
+                            <button class="bookmark-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Bookmark Post">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                            </button>
+                        </div>
+                        <div class="author-socials">
+                            <a href="#" class="author-social-link" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="author-social-link" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#" class="author-social-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="author-social-link" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Featured Media Hero Area Asset -->
+                    <div class="media-container" id="mediaContainer">
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #64748b;">
+                            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                        </div>
+                    </div>
+
+                    <!-- Post Metadata Metric Tags Block Line -->
+                    <div class="post-meta-header">
+                        <div class="article-meta-tags">
+                            <span class="meta-item-tag"><i class="fa-regular fa-calendar"></i> <span id="articleDate">--</span></span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-clock"></i> <span id="articleReadTime">1</span> min read</span>
+                            <span class="meta-item-tag"><i class="fa-solid fa-eye"></i> <span id="articleViews">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Article Body Content Pipeline -->
+                    <div class="article-body">
+                        <p class="article-summary-lead" id="articleSummary"></p>
+                        <div id="articleContent">
+                            Loading article text...
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Tag Cloud -->
+                    <div class="tag-cloud" id="articleTags">
+                        <span class="tag-item">#News</span>
+                        <span class="tag-item">#Updates</span>
+                    </div>
+
+                    <!-- Sharing Utilities Toolbar Block Component -->
+                    <div class="share-section">
+                        <div class="share-title">Share this article</div>
+                        <div class="share-buttons">
+                            <a href="#" id="shareFB" target="_blank" class="share-icon-btn fb" title="Share on Facebook">
+                                <i class="fa-brands fa-facebook-f"></i> 
+                            </a>
+                            <a href="#" id="shareTW" target="_blank" class="share-icon-btn tw" title="Share on X">
+                                <i class="fa-brands fa-x-twitter"></i> 
+                            </a>
+                            <a href="#" id="shareWA" target="_blank" class="share-icon-btn wa" title="Share on WhatsApp">
+                                <i class="fa-brands fa-whatsapp"></i> 
+                            </a>
+                            <a href="#" id="shareLN" target="_blank" class="share-icon-btn in" title="Share on LinkedIn">
+                                <i class="fa-brands fa-linkedin-in"></i> 
+                            </a>
+                            <button class="share-icon-btn copy" onclick="copyArticleLink()" title="Copy Link">
+                                <i class="fa-solid fa-link"></i>  
+                            </button>
+                        </div>
+                    </div>
+
+                </main>
+
+                <!-- Standalone High Conversion Engagement Newsletter Card Asset Component -->
+                <section class="newsletter-card">
+                    <div class="newsletter-header">
+                        <h4 class="newsletter-title">Subscribe to Our Newsletter</h4>
+                        <p class="newsletter-subtitle">Get breaking news, featured analyses, and daily roundups straight to your inbox.</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <input type="email" placeholder="Enter your email address" class="form-input-control" style="flex: 1;" required>
+                        <button type="submit" class="form-submit-btn" style="white-space: nowrap; align-self: auto;">Subscribe</button>
+                    </form>
+                    <div id="newsletterSuccess" style="display:none; font-size: 13px; color: #16a34a; text-align: center;">Thanks for subscribing! Check your inbox soon.</div>
+                </section>
+
+            </div>
+
+            <!-- Right Grid Pipeline: Sidebar Context Stream Column Block -->
+            <aside class="sidebar-stream">
+                
+                <!-- Related Publications Block Node Collection Panel -->
+                <div class="sidebar-card">
+                    <h2>Related News</h2>
+                    <div id="relatedContainer">
+                        <p style="font-size:13px; color:#64748b;">Loading related stories...</p>
+                    </div>
+                </div>
+
+                <!-- Trending Metadata Query Taxonomy Cloud Block -->
+                <div class="sidebar-card">
+                    <h2>Trending Topics</h2>
+                    <div class="tag-cloud" style="border-top: none; padding-top: 0; margin-top: 0;">
+                        <span class="tag-item">AI</span>
+                        <span class="tag-item">Crypto</span>
+                        <span class="tag-item">Startups</span>
+                        <span class="tag-item">Music</span>
+                        <span class="tag-item">Business</span>
+                        <span class="tag-item">Sports</span>
+                        <span class="tag-item">Politics</span>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Layout Base Footer Element Block Component -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <h2 class="brand-logo" style="font-size: 20px;">NewsHub</h2>
+            <p class="footer-text" style="max-width: 400px; margin-bottom: 8px;">Modern responsive news and blog platform designed for speed, beauty, and engagement.</p>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </div>
+            <p class="footer-text" style="margin-top: 12px; font-size: 11px; color: #94a3b8;">© 2026 BoonNews Asset Distribution Platforms. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Navigation & UI Logic -->
+    <script>
+        /* Navigation Drawer Toggle */
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        /* Bookmark Toggle Action */
+        function toggleBookmark() {
+            const btn = document.getElementById('bookmarkBtn');
+            btn.classList.toggle('active');
+        }
+
+        /* Reading Progress Bar Engine */
+        const progressBar = document.createElement('div');
+        progressBar.style.position = 'fixed';
+        progressBar.style.top = '0';
+        progressBar.style.left = '0';
+        progressBar.style.height = '4px';
+        progressBar.style.background = '#2563eb';
+        progressBar.style.width = '0%';
+        progressBar.style.zIndex = '9999';
+        progressBar.style.boxShadow = '0 0 8px rgba(37, 99, 235, 0.4)';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = document.documentElement.scrollTop;
+            let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let progress = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = progress + '%';
+        });
+
+        /* Link Copy Utility */
+        window.copyArticleLink = () => {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Article link copied to clipboard!");
+        };
+    </script>
+
+    <!-- Firebase Firestore Engine Core Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { 
+            getFirestore, doc, getDoc, collection, getDocs, query, where, limit, updateDoc, increment 
+        } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB29rQJnjLDlcl2m5rUBp30drxieLYQAxc",
+            authDomain: "growth-refinery.firebaseapp.com",
+            databaseURL: "https://growth-refinery-default-rtdb.firebaseio.com",
+            projectId: "growth-refinery",
+            storageBucket: "growth-refinery.firebasestorage.app",
+            messagingSenderId: "57791606499",
+            appId: "1:57791606499:web:ea8fd295189bab610d9fd6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const FALLBACK_IMG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400"><rect width="100%" height="100%" fill="%23eaeaea"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23888" font-size="20"></text></svg>';
+
+        function getEmbedUrl(url) {
+            if (!url) return '';
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) 
+                ? `https://www.youtube.com/embed/${match[2]}` 
+                : url;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        async function loadArticle() {
+            if (!postId) {
+                document.getElementById("articleTitle").textContent = "Article Not Found";
+                document.getElementById("articleContent").textContent = "No post ID specified in URL parameter.";
+                return;
+            }
+
+            try {
+                const docRef = doc(db, "newsPosts", postId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    document.getElementById("articleTitle").textContent = "Article Not Found";
+                    document.getElementById("articleContent").textContent = "The requested story does not exist or has been removed.";
+                    return;
+                }
+
+                const post = docSnap.data();
+
+                // Increment View Counter
+                updateDoc(docRef, { views: increment(1) }).catch(e => console.warn("View increment failed", e));
+
+                // Process Article Data
+                const title = post.title || 'Untitled Article';
+                const category = post.category || 'General';
+                const summary = post.summary || '';
+                const content = post.content || '';
+                const views = (post.views || 0) + 1;
+                const readTime = post.minutesRead || 1;
+                const dateStr = post.createdAt ? new Date(post.createdAt.toDate ? post.createdAt.toDate() : post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+                // Render Main Elements
+                document.getElementById("articleTitle").textContent = title;
+                document.getElementById("articleCategory").textContent = category;
+                document.getElementById("breadcrumbCategory").textContent = category;
+                document.getElementById("breadcrumbTitle").textContent = title;
+                document.getElementById("articleSummary").textContent = summary;
+                document.getElementById("articleContent").innerHTML = content;
+                document.getElementById("articleViews").textContent = views;
+                document.getElementById("articleReadTime").textContent = readTime;
+                document.getElementById("articleDate").textContent = dateStr;
+
+                // Render Author Meta if available
+                if (post.authorName) {
+                    document.getElementById("authorName").textContent = post.authorName;
+                    const initials = post.authorName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    document.getElementById("authorAvatar").textContent = initials;
+                }
+                if (post.authorRole) {
+                    document.getElementById("authorRole").textContent = post.authorRole;
+                }
+
+                // Render Dynamic Tags
+                if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
+                    document.getElementById("articleTags").innerHTML = post.tags.map(t => `<span class="tag-item">#${t}</span>`).join('');
+                } else {
+                    document.getElementById("articleTags").innerHTML = `<span class="tag-item">#${category}</span><span class="tag-item">#News</span>`;
+                }
+
+                // Setup Meta SEO
+                setupSEO(title, summary, post.imageUrl, category);
+
+                // Media Strategy (YouTube vs Image)
+                const mediaContainer = document.getElementById("mediaContainer");
+                if (post.videoUrl || post.postType === 'video') {
+                    const embedUrl = getEmbedUrl(post.videoUrl);
+                    mediaContainer.innerHTML = `
+                        <div class="video-responsive">
+                            <iframe src="${embedUrl}" allowfullscreen></iframe>
+                        </div>`;
+                } else {
+                    mediaContainer.innerHTML = `<img class="article-featured-img" src="${post.imageUrl || FALLBACK_IMG}" onerror="this.src='${FALLBACK_IMG}`;
+                }
+
+                // Share Buttons Binding
+                setupShareLinks(title);
+
+                // Load Related Posts
+                fetchRelatedArticles(category, postId);
+
+            } catch (err) {
+                console.error("Error reading article:", err);
+            }
+        }
+
+        function setupSEO(title, summary, imageUrl, category) {
+            const pageUrl = window.location.href;
+            const cleanDesc = summary || "Read this article on BoonNews.";
+            const img = imageUrl || FALLBACK_IMG;
+
+            document.title = `${title} | BoonNews`;
+            document.getElementById("metaTitleTag").setAttribute("content", `${title} | BoonNews`);
+            document.getElementById("metaDesc").setAttribute("content", cleanDesc);
+            document.getElementById("metaKeywords").setAttribute("content", `${category}, news, update, story`);
+
+            document.getElementById("ogUrl").setAttribute("content", pageUrl);
+            document.getElementById("ogTitle").setAttribute("content", title);
+            document.getElementById("ogDesc").setAttribute("content", cleanDesc);
+            document.getElementById("ogImage").setAttribute("content", img);
+
+            document.getElementById("twUrl").setAttribute("content", pageUrl);
+            document.getElementById("twTitle").setAttribute("content", title);
+            document.getElementById("twDesc").setAttribute("content", cleanDesc);
+            document.getElementById("twImage").setAttribute("content", img);
+        }
+
+        function setupShareLinks(title) {
+            const pageUrl = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(title);
+
+            document.getElementById("shareFB").href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+            document.getElementById("shareTW").href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${text}`;
+            document.getElementById("shareLN").href = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+            document.getElementById("shareWA").href = `https://api.whatsapp.com/send?text=${text}%20${pageUrl}`;
+        }
+
+        async function fetchRelatedArticles(category, currentId) {
+            const container = document.getElementById("relatedContainer");
+            try {
+                const q = query(
+                    collection(db, "newsPosts"),
+                    where("category", "==", category),
+                    limit(4)
+                );
+                const querySnapshot = await getDocs(q);
+
+                let related = [];
+                querySnapshot.forEach((docSnap) => {
+                    if (docSnap.id !== currentId) {
+                        related.push({ id: docSnap.id, ...docSnap.data() });
+                    }
+                });
+
+                if (related.length === 0) {
+                    const fallbackQ = query(collection(db, "newsPosts"), limit(3));
+                    const fallbackSnap = await getDocs(fallbackQ);
+                    fallbackSnap.forEach((docSnap) => {
+                        if (docSnap.id !== currentId && related.length < 3) {
+                            related.push({ id: docSnap.id, ...docSnap.data() });
+                        }
+                    });
+                }
+
+                if (related.length === 0) {
+                    container.innerHTML = `<p style="font-size:13px; color:#64748b;">No related stories found.</p>`;
+                    return;
+                }
+
+                container.innerHTML = related.slice(0, 3).map(post => `
+                    <a class="related-post-node" href="articleview.html?id=${post.id}">
+                        <img class="related-thumb" src="${post.imageUrl || FALLBACK_IMG}" onerror="this.src='${FALLBACK_IMG}
+                      
+                        <div class="related-meta">
+                            <h4>${post.title}</h4>
+                            <p>${post.minutesRead || 1} min read</p>
+                        </div>
+                    </a>
+                `).join('');
+
+            } catch (err) {
+                console.error("Error loading related news:", err);
+            }
+        }
+
+        // Newsletter Handler
+        document.getElementById("newsletterForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            document.getElementById("newsletterSuccess").style.display = "block";
+            e.target.reset();
+        });
+
+        loadArticle();
+    </script>
+</body>
+</html>

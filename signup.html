@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Boon News Blog</title>
+    <!-- FontAwesome for layout icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        
+                  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <!-- SIDEBAR DRAWER OVERLAY & COMPONENT -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <aside class="sidebar-drawer" id="sidebarDrawer" aria-label="Sidebar Navigation">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">Boon<span>News</span></a>
+            <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close Sidebar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form class="sidebar-search" id="sidebarSearchForm">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="sidebarSearchInput" placeholder="Search parameters...">
+        </form>
+
+        <nav>
+            <ul class="sidebar-nav-list">
+                <li><a href="index.html" class="sidebar-nav-link">Home</a></li>
+                <li><a href="about.html" class="sidebar-nav-link">About Us</a></li>
+                <li><a href="contact.html" class="sidebar-nav-link">Contact Us</a></li>
+                <li><a href="signup.html" class="sidebar-nav-link active">Create Account</a></li>
+                                <li><a href="login.html" class="sidebar-nav-link">Login Account</a></li>
+            </ul>
+        </nav>
+
+        <ul class="sidebar-footer-socials">
+            <li><a href="#" class="sidebar-social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li>
+            <li><a href="#" class="sidebar-social-icon" aria-label="Discord"><i class="fa-brands fa-discord"></i></a></li>
+            <li><a href="#" class="sidebar-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+        </ul>
+    </aside>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="site-header">
+        <div class="header-container max-w-7xl">
+            <div class="header-left">
+                <button class="burger-btn" id="sidebarToggle" aria-label="Open Navigation Sidebar"><i class="fa-solid fa-bars"></i></button>
+                <a href="index.html" class="logo">Boon<span>News</span></a>
+                
+                <form class="header-search-box" id="searchForm">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search the multiverse..." autocomplete="off">
+                </form>
+            </div>
+
+            <div class="header-center">
+                <nav class="main-nav">
+                    <ul style="display: flex; gap: 1.5rem;">
+                        <li><a href="index.html" class="nav-link">Home</a></li>
+                        <li><a href="about.html" class="nav-link">About Us</a></li>
+                        <li><a href="contact.html" class="nav-link">Contact</a></li>
+                        <li><a href="login.html" class="nav-link">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="header-right">
+                <div class="lang-selector">
+                    <span>ENG</span> <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i>
+                </div>
+                <div class="header-icons">
+                    <a href="#" class="search-trigger-fallback" aria-label="Search Trigger"><i class="fa-solid fa-magnifying-glass"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN SIGNUP CONTENT -->
+    <main>
+        <div class="signup-wrapper">
+            <div class="signup-card">
+                <div class="signup-header">
+                    <span class="text-accent sub-label">Boon News </span>
+                    <h1>Create Account</h1>
+                    <p>Create an account for personalized feeds, saved articles, and full access</p>
+                </div>
+
+                <!-- DYNAMIC AUTH STATUS ALERT -->
+                <div id="authMessage" class="auth-message"></div>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <div class="input-with-icon">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="fullName" placeholder="John Doe" required autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="email" placeholder="name@example.com" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="At least 6 characters" required autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <input type="password" id="confirmPassword" placeholder="Repeat your password" required autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="terms-check">
+                            <input type="checkbox" id="terms" required>
+                            <span>I agree to the <a href="#">Terms of Access</a> and <a href="#">Privacy Protocol</a>.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="form-submit-btn">
+                        <span id="btnText">Create Account</span>
+                        <i id="btnIcon" class="fa-solid fa-user-plus"></i>
+                    </button>
+                </form>
+
+                <div class="signup-footer-text">
+                    Already have an account? <a href="login.html">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="max-w-7xl footer-grid">
+            <div class="footer-brand-column">
+                <h3><a href="index.html" class="logo">Boon<span>News</span></a></h3>
+                <p>Stay informed with Boon News, your hub for breaking Nigerian news, sharp commentary, and real-time trending updates.</p>
+            </div>
+            
+
+
+            <div class="footer-nav-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links-list">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="signup.html">Create Account</a></li>
+                    <li><a href="advert.html">Advertise with Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Legal Menu</h4>
+                <ul class="footer-links-list">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+
+                </ul>
+            </div>
+
+            <div class="footer-nav-column">
+                <h4>Connect Space</h4>
+                <ul class="footer-socials-list">
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow on X"><i class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Join Discord Server"><i class="fa-brands fa-discord"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Watch on YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom max-w-7xl">
+            &copy; 2026 Boon News — The Heart of Nigerian News. All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- INTERACTION LOGIC & FIREBASE INTEGRATION -->
+    <script type="module" src="signup.js"></script>
+
+</body>
+</html>

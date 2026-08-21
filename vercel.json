@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/reader",
+      "destination": "/api/reader"
+    }
+  ]
+}
