@@ -1,7 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { initializeApp, cert, getApps } = require('firebase-admin/app');
-const { getFirestore } = require('firebase-admin/firestore');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { initializeApp, cert, getApps } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load Service Account JSON Key
 const serviceAccountPath = path.join(__dirname, '../serviceAccountKey.json');
@@ -67,4 +71,3 @@ ${urls.join('\n')}
 }
 
 generateSitemap();
-
