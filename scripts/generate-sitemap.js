@@ -1,68 +1,72 @@
+cat << 'EOF' > ~/boonnews/scripts/generate-sitemap.js
 const fs = require('fs');
 const path = require('path');
-const { initializeApp, cert } = require('firebase-admin/app');
+const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 
 // Load Service Account JSON Key
-const serviceAccount = require('../serviceAccountKey.json');
+const serviceAccountPath = path.join(__dirname, '../serviceAccountKey.json');
 
-// Initialize Firebase Admin
-initializeApp({
-  credential: cert(serviceAccount)
-});
+if (!getApps().length && fs.existsSync(serviceAccountPath)) {
+  const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+  initializeApp({
+    credential: cert(serviceAccount)
+  });
+}
 
 const db = getFirestore();
 const BASE_URL = 'https://boonnews.vercel.app';
 
 async function generateSitemap() {
   try {
+    console.log('Fetching news posts from Firestore...');
+
     const staticPages = [
-      { url: '/', priority: '1.0', changefreq: 'daily' },
+      { url: '', priority: '1.0', changefreq: 'daily' },
+      { url: '/about.html', priority: '0.8', changefreq: 'monthly' },
+      { url: '/contact.html', priority: '0.8', changefreq: 'monthly' },
+      { url: '/advert.html', priority: '0.8', changefreq: 'monthly' }
     ];
 
-    // Fetch Articles from Firestore
-    // (Change 'articles' if your Firestore collection is named differently)
-    const snapshot = await db.collection('articles').get();
-    const dynamicPages = [];
-
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      const slug = data.slug || doc.id;
-      
-      dynamicPages.push({
-        url: `/post.html?id=${slug}`,
-        priority: '0.8',
-        changefreq: 'weekly',
-        lastmod: data.updatedAt ? new Date(data.updatedAt.toDate()).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-      });
-    });
-
-    const allPages = [...staticPages, ...dynamicPages];
-
-    const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allPages
-  .map(
-    (page) => `  <url>
+    let urls = staticPages.map(
+      (page) => `  <url>
     <loc>${BASE_URL}${page.url}</loc>
-    <lastmod>${page.lastmod || new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`
-  )
-  .join('\n')}
+    );
+
+    // Pull published posts from Firestore "newsPosts" collection
+    const snapshot = await db.collection('newsPosts').get();
+    snapshot.forEach((doc) => {
+      urls.push(`  <url>
+    <loc>${BASE_URL}/reader?id=${doc.id}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`);
+    });
+
+    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
 </urlset>`;
 
+    // Ensure public directory exists
     const publicDir = path.join(__dirname, '../public');
     if (!fs.existsSync(publicDir)) {
       fs.mkdirSync(publicDir, { recursive: true });
     }
 
-    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml.trim());
-    console.log('✅ sitemap.xml created successfully inside public/!');
+    // Write file to BOTH root directory and public directory
+    fs.writeFileSync(path.join(__dirname, '../sitemap.xml'), xmlContent, 'utf8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xmlContent, 'utf8');
+
+    console.log(`✅ sitemap.xml created successfully with ${urls.length} URLs!`);
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
   }
 }
 
 generateSitemap();
+EOF
+
