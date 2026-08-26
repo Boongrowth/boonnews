@@ -1,4 +1,3 @@
-cat << 'EOF' > ~/boonnews/scripts/generate-sitemap.js
 const fs = require('fs');
 const path = require('path');
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
@@ -68,5 +67,4 @@ ${urls.join('\n')}
 }
 
 generateSitemap();
-EOF
 
