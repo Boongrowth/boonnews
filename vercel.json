@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/reader",
@@ -6,3 +8,4 @@
     }
   ]
 }
+
