@@ -12,7 +12,7 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://boonnews.vercel.app">
 
-    <!-- Open Graph / Social Media (Facebook, WhatsApp, LinkedIn, Telegram) -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://boonnews.vercel.app">
     <meta property="og:title" content="Boon News | Latest News, Insights & In-Depth Reports">
@@ -30,12 +30,21 @@
     <meta name="twitter:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
     <meta name="twitter:image" content="https://boonnews.vercel.app/boon-news-og-banner.jpg">
 
-    <!-- Stylesheets & Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <!-- Performance Preconnect Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
 
-<body>
+    <!-- Optimized Google Fonts (Trimmed to essential weights + display=swap) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="home.css">
+</head> 
+  <body>
 
     <!-- SIDEBAR DRAWER OVERLAY & COMPONENT -->
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -47,32 +56,27 @@
 
         <form class="sidebar-search" id="sidebarSearchForm">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="sidebarSearchInput" placeholder="Search parameters...">
+            <input type="text" id="sidebarSearchInput" placeholder="Search here...">
         </form>
 
         <nav>
             <ul class="sidebar-nav-list">
                 <li><a href="index.html" class="sidebar-nav-link active">Home</a></li>
-                <li><a href="about.html" class="sidebar-nav-link">About Us Hub</a></li>
+                <li><a href="about.html" class="sidebar-nav-link">About Us</a></li>
                 <li><a href="contact.html" class="sidebar-nav-link">Contact Us</a></li>
                 <li><a href="advert.html" class="sidebar-nav-link">Advertise</a></li>
-
-                <li><a href="signup.html" class="sidebar-nav-link">Create Account</a></li>
             </ul>
         </nav>
 
-        <!-- DYNAMIC SIDEBAR BOTTOM CONTAINER (AUTH / BALANCE) -->
-        <div class="sidebar-bottom-section">
-            <div id="sidebarAuthContainer">
-                <!-- Dynamically populated via Firebase Auth state -->
-            </div>
-
-            <ul class="sidebar-footer-socials">
-                <li><a href="#" class="sidebar-social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a></li>
-                <li><a href="#" class="sidebar-social-icon" aria-label="Discord"><i class="fa-brands fa-discord"></i></a></li>
-                <li><a href="#" class="sidebar-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
-            </ul>
-        </div>
+        <ul class="sidebar-footer-socials">
+            <li><a href="https://www.facebook.com/profile.php?id=61570604278953" class="sidebar-social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-facebook"></i></a></li>
+         <li><a href="https://youtube.com/@boonnews?si=5KrPL-0vLmUCj4Ny" class="sidebar-social-icon" aria-label="youtube"><i class="fa-brands fa-youtube"></i></a></li>
+          
+          <li><a href="#" class="sidebar-social-icon" aria-label="twitter"><i class="fa-brands fa-twitter"></i></a></li>
+            <li><a href="#" class="sidebar-social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></li>
+          
+    
+        </ul>
     </aside>
 
     <!-- HEADER / NAVIGATION -->
@@ -119,11 +123,9 @@
             <form class="banner-search-form" id="bannerSearchForm">
                 <div class="banner-search-input-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="bannerSearchInput" placeholder="Type keywords, topics or categories to search..." autocomplete="off">
+                    <input type="text" id="bannerSearchInput" placeholder="Search here..." autocomplete="off">
                 </div>
-                <button type="submit" class="banner-search-btn">
-                    <span>                    <i class="fa-solid fa-magnifying-glass"></i></span>
-                </button>
+                
             </form>
         </div>
     </section>
@@ -140,7 +142,6 @@
                 <!-- Dynamically loaded via Firestore JS -->
             </div>
         </section>
-
 
         <!-- TRENDING NEWS SECTION (POPULAR POSTS SLIDER) -->
         <section style="margin-bottom: 3rem;">
@@ -165,7 +166,6 @@
             </ul>
         </section>
 
-
         <!-- EDITOR CHOICE SECTION -->
         <section class="editor-section">
             <div class="section-header">
@@ -181,7 +181,6 @@
             </ul>
         </section>
 
-
         <!-- RECENT VIDEO POST SECTION -->
         <section class="video-section">
             <div class="section-header">
@@ -196,7 +195,6 @@
                 <!-- Dynamically loaded via Firestore JS -->
             </div>
         </section>
-
 
         <!-- LIGHT ACCENT SLIDER BAND (More to Watch Block) -->
         <section class="dark-band-section">
@@ -221,7 +219,6 @@
             </div>
         </section>
 
-
         <!-- POPULAR STORIES SECTION -->
         <section class="stories-section">
             <div class="section-header">
@@ -243,7 +240,6 @@
                 <!-- Dynamically loaded via Firestore JS -->
             </div>
         </section>
-
 
         <!-- NEWSLETTER CARD CTA LAYOUT MODULE -->
         <section class="newsletter-panel" aria-label="Newsletter Signup">
@@ -278,8 +274,6 @@
                 <h3><a href="index.html" class="logo">Boon<span>News</span></a></h3>
                 <p>Stay informed with Boon News, your hub for breaking Nigerian news, sharp commentary, and real-time trending updates.</p>
             </div>
-            
-
 
             <div class="footer-nav-column">
                 <h4>Quick Links</h4>
@@ -296,17 +290,17 @@
                 <ul class="footer-links-list">
                     <li><a href="#">Privacy Policy</a></li>
                     <li><a href="#">Terms of Service</a></li>
-
                 </ul>
             </div>
 
             <div class="footer-nav-column">
                 <h4>Connect Space</h4>
                 <ul class="footer-socials-list">
-                    <li><a href="#" class="footer-social-btn" aria-label="Follow on X"><i class="fa-brands fa-x-twitter"></i></a></li>
-                    <li><a href="#" class="footer-social-btn" aria-label="Join Discord Server"><i class="fa-brands fa-discord"></i></a></li>
+                    <li><a href="https://www.facebook.com/profile.php?id=61570604278953" class="footer-social-btn" aria-label="Follow on Facebook"><i class="fa-brands fa-facebook"></i></a></li>
+                  <li><a href="https://youtube.com/@boonnews?si=5KrPL-0vLmUCj4Ny" class="footer-social-btn" aria-label="Watch on YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+                    <li><a href="#" class="footer-social-btn" aria-label="Follow us on X "><i class="fa-brands fa-twitter"></i></a></li>
                     <li><a href="#" class="footer-social-btn" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram"></i></a></li>
-                    <li><a href="#" class="footer-social-btn" aria-label="Watch on YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+                    
                 </ul>
             </div>
         </div>
@@ -316,11 +310,9 @@
         </div>
     </footer>
 
-
     <!-- JS: SLIDERS & SIDEBAR CONTROL RIG -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // SIDEBAR TOGGLE MECHANICS
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebarClose = document.getElementById('sidebarClose');
             const sidebarBackdrop = document.getElementById('sidebarBackdrop');
@@ -329,20 +321,19 @@
             const openSidebar = () => {
                 sidebarDrawer.classList.add('active');
                 sidebarBackdrop.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Lock base scroll
+                document.body.style.overflow = 'hidden';
             };
 
             const closeSidebar = () => {
                 sidebarDrawer.classList.remove('active');
                 sidebarBackdrop.classList.remove('active');
-                document.body.style.overflow = ''; // Release scroll
+                document.body.style.overflow = '';
             };
 
             if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
             if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
             if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
 
-            // SLIDER CONTAINER LOGIC TRACKS
             const setupSlider = (containerId, prevId, nextId) => {
                 const container = document.getElementById(containerId);
                 const prevBtn = document.getElementById(prevId);
@@ -370,6 +361,7 @@
     </script>
 
     <!-- FIRESTORE DATA MODULE & TEMPLATE RENDERER -->
-    <script type="module" src="script.js"></script>
+  <script type="module" src="home.js"></script>
 </body>
 </html>
+
