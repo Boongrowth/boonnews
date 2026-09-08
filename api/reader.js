@@ -52,6 +52,7 @@ export default async function handler(request) {
         .replace(/id="twitterTitle" content=".*?"/, `id="twitterTitle" content="${title}"`)
         .replace(/id="twitterDescription" content=".*?"/, `id="twitterDescription" content="${summary}"`)
         .replace(/id="twitterImage" content=".*?"/, `id="twitterImage" content="${image}"`)
+        .replace(/<\/head>/, `<meta property="fb:app_id" content="1767963851059615" /></head>`)
         .replace(/id="twitterUrl" content=".*?"/, `id="twitterUrl" content="${currentUrl}"`);
 
       // 4. Update JSON-LD Schema
