@@ -2,11 +2,12 @@ export const config = {
   runtime: 'edge',
 };
 
-// Helper to escape standard HTML attribute values
-function escapeAttr(str = '') {
+// Helper function to safely escape strings inserted into HTML attributes
+function escapeHtmlAttr(str) {
   return str
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
@@ -16,25 +17,11 @@ export default async function handler(request) {
   const articleId = searchParams.get('id');
   const baseUrl = 'https://boonnews.vercel.app';
   const firebaseProjectId = 'primeintelmedia-e2fe3';
-  const defaultBanner = `${baseUrl}/boon-news-og-banner.jpg`;
 
-  // 1. Fetch static template safely
-  let html = '';
-  try {
-    const htmlResponse = await fetch(`${baseUrl}/reader.html`, { cache: 'no-store' });
-    if (htmlResponse.ok) {
-      html = await htmlResponse.text();
-    }
-  } catch (e) {
-    console.error('Failed to fetch static template:', e);
-  }
+  // 1. Fetch static HTML template
+  const htmlResponse = await fetch(`${baseUrl}/reader.html`);
+  let html = await htmlResponse.text();
 
-  // Fallback minimal HTML structure if reader.html fails to load
-  if (!html) {
-    html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body><div id="app"></div></body></html>`;
-  }
-
-  // If no article ID is present, return static template immediately
   if (!articleId) {
     return new Response(html, {
       headers: { 'content-type': 'text/html; charset=utf-8' },
@@ -42,43 +29,49 @@ export default async function handler(request) {
   }
 
   try {
-    // 2. Query Firestore REST API
-    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/newsPosts/${encodeURIComponent(articleId)}`;
+    // 2. Fetch document from Firestore REST API
+    const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/newsPosts/${articleId}`;
     const res = await fetch(firestoreUrl);
 
     if (res.ok) {
       const data = await res.json();
       const fields = data.fields || {};
 
-      const rawTitle = fields.title?.stringValue || 'BoonNews | Breaking Updates';
+      const titleRaw = fields.title?.stringValue || 'BoonNews | Read Article';
+      const summaryRaw =
+        fields.summary?.stringValue ||
+        fields.content?.stringValue?.replace(/<[^>]*>?/gm, '').substring(0, 155) ||
+        'Read full news articles, analysis, and breaking updates on BoonNews.';
       
-      // Clean up content for summary extraction
-      const rawContentSnippet = (fields.content?.stringValue || '')
-        .replace(/<[^>]+>/g, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .substring(0, 155);
-
-      const rawSummary = fields.summary?.stringValue || rawContentSnippet || 'Read full news articles, analysis, and breaking updates on BoonNews.';
-      
-      let image = fields.imageUrl?.stringValue || defaultBanner;
-      if (!image.startsWith('http')) {
-        image = defaultBanner;
-      }
-
+      const title = escapeHtmlAttr(`${titleRaw} | BoonNews`);
+      const summary = escapeHtmlAttr(summaryRaw);
+      const image = escapeHtmlAttr(fields.imageUrl?.stringValue || `${baseUrl}/boon-news-og-banner.jpg`);
       const author = fields.author?.stringValue || 'BoonNews Editorial';
-      const currentUrl = `${baseUrl}/reader?id=${encodeURIComponent(articleId)}`;
+      const currentUrl = escapeHtmlAttr(`${baseUrl}/reader?id=${articleId}`);
 
-      const titleAttr = escapeAttr(rawTitle);
-      const summaryAttr = escapeAttr(rawSummary);
+      // 3. Inject into meta tags using safe replacement functions
+      html = html
+        .replace(/<title id="metaTitle">.*?<\/title>/, () => `<title>${title}</title>`)
+        .replace(/id="metaTitleTag" content=".*?"/, () => `id="metaTitleTag" content="${title}"`)
+        .replace(/id="metaDescription" content=".*?"/, () => `id="metaDescription" content="${summary}"`)
+        .replace(/id="metaCanonical" href=".*?"/, () => `id="metaCanonical" href="${currentUrl}"`)
+        .replace(/id="ogTitle" content=".*?"/, () => `id="ogTitle" content="${title}"`)
+        .replace(/id="ogDescription" content=".*?"/, () => `id="ogDescription" content="${summary}"`)
+        .replace(/id="ogImage" content=".*?"/, () => `id="ogImage" content="${image}"`)
+        .replace(/id="ogUrl" content=".*?"/, () => `id="ogUrl" content="${currentUrl}"`)
+        .replace(/id="twitterTitle" content=".*?"/, () => `id="twitterTitle" content="${title}"`)
+        .replace(/id="twitterDescription" content=".*?"/, () => `id="twitterDescription" content="${summary}"`)
+        .replace(/id="twitterImage" content=".*?"/, () => `id="twitterImage" content="${image}"`)
+        .replace(/id="twitterUrl" content=".*?"/, () => `id="twitterUrl" content="${currentUrl}"`)
+        .replace(/<\/head>/, () => `<meta property="fb:app_id" content="1767963851059615" /></head>`);
 
-      // JSON-LD structured data payload safely serialized
-      const jsonLdData = {
+      // 4. Update JSON-LD Schema
+      const updatedSchema = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "NewsArticle",
-        "headline": rawTitle,
-        "image": [image],
-        "description": rawSummary,
+        "headline": titleRaw,
+        "image": [fields.imageUrl?.stringValue || `${baseUrl}/boon-news-og-banner.jpg`],
+        "description": summaryRaw,
         "author": {
           "@type": "Person",
           "name": author
@@ -88,56 +81,21 @@ export default async function handler(request) {
           "name": "BoonNews",
           "logo": {
             "@type": "ImageObject",
-            "url": defaultBanner
+            "url": `${baseUrl}/boon-news-og-banner.jpg`
           }
         }
-      };
+      });
 
-      // 3. Build complete Meta Tags & OpenGraph Block
-      const metaInjection = `
-  <title>${titleAttr} | BoonNews</title>
-  <meta name="description" content="${summaryAttr}">
-  <link rel="canonical" href="${escapeAttr(currentUrl)}">
-
-  <!-- Open Graph / Facebook / WhatsApp -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="${escapeAttr(currentUrl)}">
-  <meta property="og:title" content="${titleAttr}">
-  <meta property="og:description" content="${summaryAttr}">
-  <meta property="og:image" content="${escapeAttr(image)}">
-  <meta property="og:image:secure_url" content="${escapeAttr(image)}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="BoonNews">
-  <meta property="fb:app_id" content="1767963851059615">
-
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="${escapeAttr(currentUrl)}">
-  <meta name="twitter:title" content="${titleAttr}">
-  <meta name="twitter:description" content="${summaryAttr}">
-  <meta name="twitter:image" content="${escapeAttr(image)}">
-
-  <!-- Structured JSON-LD Data -->
-  <script type="application/ld+json">
-  ${JSON.stringify(jsonLdData, null, 2)}
-  </script>`;
-
-      // Strip existing <title> tag to prevent duplication
-      html = html.replace(/<title[^>]*>.*?<\/title>/i, '');
-
-      // Inject clean meta tags into <head>
-      if (html.includes('</head>')) {
-        html = html.replace('</head>', `${metaInjection}\n</head>`);
-      } else {
-        html = metaInjection + html;
-      }
+      html = html.replace(
+        /<script type="application\/ld\+json" id="articleSchema">[\s\S]*?<\/script>/,
+        () => `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>`
+      );
     }
   } catch (err) {
-    console.error('Error processing Edge request:', err);
+    console.error('Error fetching Firestore metadata:', err);
   }
 
-  // 4. Return server-rendered HTML response
+  // 5. Return Edge Response with Caching
   return new Response(html, {
     headers: {
       'content-type': 'text/html; charset=utf-8',
