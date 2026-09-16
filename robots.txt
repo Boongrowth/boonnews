@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://boonnewsng.blog/sitemap.xml
