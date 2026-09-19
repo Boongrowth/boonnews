@@ -3,6 +3,10 @@
     {
       "source": "/reader",
       "destination": "/api/reader"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     }
   ]
 }
