@@ -476,7 +476,7 @@
 
       function updateSEO(post, authorName) {
         const title = post.title || "Untitled Article";
-        const excerpt = post.excerpt || title;
+        const excerpt = post.summary || title;
         const imgUrl = post.imageUrl || FALLBACK_IMG;
         const canonicalUrl = getShareableUrl();
 
@@ -493,16 +493,16 @@
         };
 
         setMetaText("metaTitle", `${title} | Boon News`);
-        setMetaAttr("metaDesc", "content", excerpt);
+        setMetaAttr("metaDesc", "content", summary);
         setMetaAttr("metaCanonical", "href", canonicalUrl);
 
         setMetaAttr("ogTitle", "content", title);
-        setMetaAttr("ogDesc", "content", excerpt);
+        setMetaAttr("ogDesc", "content", summary);
         setMetaAttr("ogImage", "content", imgUrl);
         setMetaAttr("ogUrl", "content", canonicalUrl);
 
         setMetaAttr("twTitle", "content", title);
-        setMetaAttr("twDesc", "content", excerpt);
+        setMetaAttr("twDesc", "content", summary);
         setMetaAttr("twImage", "content", imgUrl);
         setMetaAttr("twUrl", "content", canonicalUrl);
 
@@ -610,7 +610,7 @@
         }
 
         const title = post.title || "Untitled Article";
-        const rawContent = post.content || post.body || post.excerpt || "No content available.";
+        const rawContent = post.content || post.body || post.summary || "No content available.";
         const category = post.category || "News";
         const imgUrl = post.imageUrl || FALLBACK_IMG;
         const views = (post.views || post.viewCount || 0) + 1;
