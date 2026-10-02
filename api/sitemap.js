@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       { url: `${BASE_URL}`, priority: "1.0", changefreq: "always", lastmod: currentDate },
       { url: `${BASE_URL}/about`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/contact`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
-      { url: `${BASE_URL}/advert`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
+      { url: `${BASE_URL}/category`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/privacy`, priority: "0.3", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/terms`, priority: "0.3", changefreq: "monthly", lastmod: currentDate }
     ];
