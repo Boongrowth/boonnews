@@ -82,25 +82,27 @@ export default async function handler(request) {
 
       // 3. Update Page Titles & Canonical Tags
       html = html.replace(/<title[^>]*>.*?<\/title>/i, `<title>${pageTitle}</title>`);
-      html = setOrInjectTag(html, /<meta[^>]*id="metaTitleTag"[^>]*>/i, `<meta id="metaTitleTag" name="title" content="${pageTitle}" />`);
-      html = setOrInjectTag(html, /<link[^>]*(?:id="metaCanonical"|rel=["']canonical["'])[^>]*>/i, `<link id="metaCanonical" rel="canonical" href="${currentUrl}" />`);
+      // In reader.js — replace sections 3 through 7 with these regexes:
 
-      // 4. Update Description Tags (Standard, OG, Twitter)
-      html = setOrInjectTag(html, /<meta[^>]*(?:id="metaDescription"|name=["']description["'])[^>]*>/i, `<meta id="metaDescription" name="description" content="${summary}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:property|name)=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${summary}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:name|property)=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${summary}" />`);
+// 3. Update Page Titles & Canonical
+html = html.replace(/<title[^>]*>.*?<\/title>/i, `<title>${pageTitle}</title>`);
+html = setOrInjectTag(html, /<link[^>]*(?:id="metaCanonical"|rel=["']canonical["'])[^>]*>/i, `<link id="metaCanonical" rel="canonical" href="${currentUrl}" />`);
 
-      // 5. Update Open Graph Tags
-      html = setOrInjectTag(html, /<meta[^>]*(?:property|name)=["']og:type["'][^>]*>/i, `<meta property="og:type" content="article" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:property|name)=["']og:title["'][^>]*>/i, `<meta property="og:title" content="${title}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:property|name)=["']og:image["'][^>]*>/i, `<meta property="og:image" content="${image}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:property|name)=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${currentUrl}" />`);
+// 4. Update Descriptions (Standard, OG, Twitter)
+html = setOrInjectTag(html, /<meta[^>]*(?:id="metaDesc"|name=["']description["'])[^>]*>/i, `<meta id="metaDesc" name="description" content="${summary}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="ogDesc"|property=["']og:description["'])[^>]*>/i, `<meta id="ogDesc" property="og:description" content="${summary}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="twDesc"|name=["']twitter:description["'])[^>]*>/i, `<meta id="twDesc" name="twitter:description" content="${summary}" />`);
 
-      // 6. Update Twitter Card & Tags
-      html = setOrInjectTag(html, /<meta[^>]*(?:name|property)=["']twitter:card["'][^>]*>/i, `<meta name="twitter:card" content="summary_large_image" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:name|property)=["']twitter:title["'][^>]*>/i, `<meta name="twitter:title" content="${title}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:name|property)=["']twitter:image["'][^>]*>/i, `<meta name="twitter:image" content="${image}" />`);
-      html = setOrInjectTag(html, /<meta[^>]*(?:name|property)=["']twitter:url["'][^>]*>/i, `<meta name="twitter:url" content="${currentUrl}" />`);
+// 5. Update Open Graph Meta
+html = setOrInjectTag(html, /<meta[^>]*(?:id="ogTitle"|property=["']og:title["'])[^>]*>/i, `<meta id="ogTitle" property="og:title" content="${title}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="ogImage"|property=["']og:image["'])[^>]*>/i, `<meta id="ogImage" property="og:image" content="${image}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="ogUrl"|property=["']og:url["'])[^>]*>/i, `<meta id="ogUrl" property="og:url" content="${currentUrl}" />`);
+
+// 6. Update Twitter Meta
+html = setOrInjectTag(html, /<meta[^>]*name=["']twitter:card["'][^>]*>/i, `<meta name="twitter:card" content="summary_large_image" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="twTitle"|name=["']twitter:title["'])[^>]*>/i, `<meta id="twTitle" name="twitter:title" content="${title}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="twImage"|name=["']twitter:image["'])[^>]*>/i, `<meta id="twImage" name="twitter:image" content="${image}" />`);
+html = setOrInjectTag(html, /<meta[^>]*(?:id="twUrl"|name=["']twitter:url["'])[^>]*>/i, `<meta id="twUrl" name="twitter:url" content="${currentUrl}" />`);
 
       // 7. Inject Facebook App ID
       html = setOrInjectTag(html, /<meta[^>]*property=["']fb:app_id["'][^>]*>/i, `<meta property="fb:app_id" content="1767963851059615" />`);
