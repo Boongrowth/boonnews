@@ -10,18 +10,22 @@ export default async function handler(request) {
   const baseUrl = origin.includes('vercel.app') ? 'https://boonnewsng.blog' : origin;
   const firebaseProjectId = 'primeintelmedia-e2fe3';
 
-  // 1. Always fetch reader.html using `origin` directly to avoid external routing loops
+  // 1. Fetch reader.html template without triggering route loops
   let html = '';
   try {
-    const htmlResponse = await fetch(`${origin}/reader.html`);
-    if (!htmlResponse.ok) throw new Error(`Failed to fetch template: ${htmlResponse.status}`);
+    const templateUrl = new URL('/reader.html', request.url);
+    const htmlResponse = await fetch(templateUrl);
+    
+    if (!htmlResponse.ok) {
+      throw new Error(`Failed to fetch template: ${htmlResponse.status}`);
+    }
     html = await htmlResponse.text();
   } catch (err) {
     console.error('Error fetching reader.html template:', err);
     return new Response('Error loading template', { status: 500 });
   }
 
-  // Return base template if no article ID is present in URL
+  // Return base template if no article ID is present
   if (!articleId) {
     return new Response(html, {
       headers: { 'content-type': 'text/html; charset=utf-8' },
@@ -29,7 +33,7 @@ export default async function handler(request) {
   }
 
   try {
-    // 2. Fetch the article document from Firestore REST API
+    // 2. Fetch article document from Firestore REST API
     const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${firebaseProjectId}/databases/(default)/documents/newsPosts/${articleId}`;
     const res = await fetch(firestoreUrl);
 
@@ -37,18 +41,20 @@ export default async function handler(request) {
       const data = await res.json();
       const fields = data.fields || {};
 
-      // Helper to safely sanitize attribute values without double-encoding entities
-      const cleanAttr = (str = '') => str.replace(/"/g, '&quot;').trim();
+      const cleanAttr = (str = '') =>
+        str
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .trim();
 
-      const rawTitle = fields.title?.stringValue || 'BoonNews | Read Article';
+      const rawTitle = fields.title?.stringValue || 'Boon News | Read Article';
       const title = cleanAttr(rawTitle);
-      const pageTitle = cleanAttr(`${rawTitle} | BoonNews`);
+      const pageTitle = cleanAttr(`${rawTitle} | Boon News`);
 
-      let rawSummary =
-        fields.summary?.stringValue ||
-        fields.excerpt?.stringValue ||
-        fields.description?.stringValue ||
-        '';
+      // Updated Summary Extraction Strategy (Checks `summary` -> generates from `content`)
+      let rawSummary = fields.summary?.stringValue || '';
 
       if (!rawSummary && fields.content?.stringValue) {
         rawSummary = fields.content.stringValue
@@ -59,20 +65,22 @@ export default async function handler(request) {
       }
 
       if (!rawSummary) {
-        rawSummary = 'Read full news articles, analysis, and breaking updates on BoonNews.';
+        rawSummary = 'Read full news articles, analysis, and breaking updates on Boon News.';
       }
       const summary = cleanAttr(rawSummary);
 
-      // Ensure image URL is absolute
+      // Absolute image URL formatting
       let rawImageUrl = fields.imageUrl?.stringValue || fields.image?.stringValue;
       if (rawImageUrl && !rawImageUrl.startsWith('http')) {
         rawImageUrl = `${baseUrl}${rawImageUrl.startsWith('/') ? '' : '/'}${rawImageUrl}`;
       }
-      const image = cleanAttr(rawImageUrl || `${baseUrl}/boon-news-og-banner.jpg`);
-      const author = cleanAttr(fields.author?.stringValue || 'BoonNews Editorial');
+      const image = cleanAttr(
+        rawImageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80'
+      );
+      const author = cleanAttr(fields.author?.stringValue || 'Boon News Desk');
       const currentUrl = cleanAttr(`${baseUrl}/reader?id=${articleId}`);
 
-      // Helper: Flexible regex match to support both name/property and custom IDs
+      // Helper: Dot-all regex match (/is) to support multiline tags in reader.html
       const setOrInjectTag = (htmlText, pattern, newTag) => {
         if (pattern.test(htmlText)) {
           return htmlText.replace(pattern, newTag);
@@ -80,34 +88,78 @@ export default async function handler(request) {
         return htmlText.replace(/<\/head>/i, `${newTag}\n</head>`);
       };
 
-      // 3. Update Page Titles & Canonical Tags
-      html = html.replace(/<title[^>]*>.*?<\/title>/i, `<title>${pageTitle}</title>`);
-      // In reader.js — replace sections 3 through 7 with these regexes:
+      // 3. Update Titles & Canonical Tags
+      html = html.replace(/<title[^>]*>.*?<\/title>/is, `<title>${pageTitle}</title>`);
+      html = setOrInjectTag(
+        html,
+        /<link[^>]*(?:id=["']metaCanonical["']|rel=["']canonical["'])[^>]*>/is,
+        `<link id="metaCanonical" rel="canonical" href="${currentUrl}" />`
+      );
 
-// 3. Update Page Titles & Canonical
-html = html.replace(/<title[^>]*>.*?<\/title>/i, `<title>${pageTitle}</title>`);
-html = setOrInjectTag(html, /<link[^>]*(?:id="metaCanonical"|rel=["']canonical["'])[^>]*>/i, `<link id="metaCanonical" rel="canonical" href="${currentUrl}" />`);
+      // 4. Update Descriptions (Standard, OG, Twitter)
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']metaDesc["']|name=["']description["'])[^>]*>/is,
+        `<meta id="metaDesc" name="description" content="${summary}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']ogDesc["']|property=["']og:description["'])[^>]*>/is,
+        `<meta id="ogDesc" property="og:description" content="${summary}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']twDesc["']|name=["']twitter:description["'])[^>]*>/is,
+        `<meta id="twDesc" name="twitter:description" content="${summary}" />`
+      );
 
-// 4. Update Descriptions (Standard, OG, Twitter)
-html = setOrInjectTag(html, /<meta[^>]*(?:id="metaDesc"|name=["']description["'])[^>]*>/i, `<meta id="metaDesc" name="description" content="${summary}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="ogDesc"|property=["']og:description["'])[^>]*>/i, `<meta id="ogDesc" property="og:description" content="${summary}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="twDesc"|name=["']twitter:description["'])[^>]*>/i, `<meta id="twDesc" name="twitter:description" content="${summary}" />`);
+      // 5. Update Open Graph Meta
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']ogTitle["']|property=["']og:title["'])[^>]*>/is,
+        `<meta id="ogTitle" property="og:title" content="${title}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']ogImage["']|property=["']og:image["'])[^>]*>/is,
+        `<meta id="ogImage" property="og:image" content="${image}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']ogUrl["']|property=["']og:url["'])[^>]*>/is,
+        `<meta id="ogUrl" property="og:url" content="${currentUrl}" />`
+      );
 
-// 5. Update Open Graph Meta
-html = setOrInjectTag(html, /<meta[^>]*(?:id="ogTitle"|property=["']og:title["'])[^>]*>/i, `<meta id="ogTitle" property="og:title" content="${title}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="ogImage"|property=["']og:image["'])[^>]*>/i, `<meta id="ogImage" property="og:image" content="${image}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="ogUrl"|property=["']og:url["'])[^>]*>/i, `<meta id="ogUrl" property="og:url" content="${currentUrl}" />`);
-
-// 6. Update Twitter Meta
-html = setOrInjectTag(html, /<meta[^>]*name=["']twitter:card["'][^>]*>/i, `<meta name="twitter:card" content="summary_large_image" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="twTitle"|name=["']twitter:title["'])[^>]*>/i, `<meta id="twTitle" name="twitter:title" content="${title}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="twImage"|name=["']twitter:image["'])[^>]*>/i, `<meta id="twImage" name="twitter:image" content="${image}" />`);
-html = setOrInjectTag(html, /<meta[^>]*(?:id="twUrl"|name=["']twitter:url["'])[^>]*>/i, `<meta id="twUrl" name="twitter:url" content="${currentUrl}" />`);
+      // 6. Update Twitter Meta
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*name=["']twitter:card["'][^>]*>/is,
+        `<meta name="twitter:card" content="summary_large_image" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']twTitle["']|name=["']twitter:title["'])[^>]*>/is,
+        `<meta id="twTitle" name="twitter:title" content="${title}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']twImage["']|name=["']twitter:image["'])[^>]*>/is,
+        `<meta id="twImage" name="twitter:image" content="${image}" />`
+      );
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*(?:id=["']twUrl["']|name=["']twitter:url["'])[^>]*>/is,
+        `<meta id="twUrl" name="twitter:url" content="${currentUrl}" />`
+      );
 
       // 7. Inject Facebook App ID
-      html = setOrInjectTag(html, /<meta[^>]*property=["']fb:app_id["'][^>]*>/i, `<meta property="fb:app_id" content="1767963851059615" />`);
+      html = setOrInjectTag(
+        html,
+        /<meta[^>]*property=["']fb:app_id["'][^>]*>/is,
+        `<meta property="fb:app_id" content="1767963851059615" />`
+      );
 
-      // 8. Inject Schema (JSON-LD) with Dot-All Regex Flag (/s)
+      // 8. Inject Structured Data (Schema JSON-LD)
       const updatedSchema = JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'NewsArticle',
@@ -120,26 +172,32 @@ html = setOrInjectTag(html, /<meta[^>]*(?:id="twUrl"|name=["']twitter:url["'])[^
         },
         publisher: {
           '@type': 'Organization',
-          name: 'BoonNews',
+          name: 'Boon News',
           logo: {
             '@type': 'ImageObject',
-            url: `${baseUrl}/boon-news-og-banner.jpg`,
+            url: `${baseUrl}/assets/images/logo.png`,
           },
         },
       });
 
-      const schemaRegex = /<script[^>]*id=["']articleSchema["'][^>]*>.*?<\/script>/s;
+      const schemaRegex = /<script[^>]*id=["']articleSchema["'][^>]*>.*?<\/script>/is;
       if (schemaRegex.test(html)) {
-        html = html.replace(schemaRegex, `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>`);
+        html = html.replace(
+          schemaRegex,
+          `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>`
+        );
       } else {
-        html = html.replace(/<\/head>/i, `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>\n</head>`);
+        html = html.replace(
+          /<\/head>/i,
+          `<script type="application/ld+json" id="articleSchema">${updatedSchema}</script>\n</head>`
+        );
       }
     }
   } catch (err) {
     console.error('Error fetching Firestore metadata:', err);
   }
 
-  // 9. Return server-rendered HTML
+  // 9. Return server-rendered HTML with edge caching headers
   return new Response(html, {
     headers: {
       'content-type': 'text/html; charset=utf-8',
