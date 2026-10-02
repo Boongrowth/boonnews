@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary Search Meta Tags -->
+    <title id="metaTitle">Article Reader | Boon News</title>
+    <meta id="metaDesc" name="description" content="Read full stories, real-time news, and in-depth analysis on Boon News.">
+    <meta name="keywords" content="Boon News, news, reader, latest updates, blog, analysis, opinion">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" id="metaCanonical" href="https://boonnewsng.blog/reader">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="article">
+    <meta id="ogUrl" property="og:url" content="https://boonnewsng.blog/reader">
+    <meta id="ogTitle" property="og:title" content="Boon News | Article Reader">
+    <meta id="ogDesc" property="og:description" content="Read full stories, real-time news, and in-depth analysis on Boon News.">
+    <meta id="ogImage" property="og:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:site_name" content="Boon News">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twUrl" name="twitter:url" content="https://boonnewsng.blog/reader">
+    <meta id="twTitle" name="twitter:title" content="Boon News | Article Reader">
+    <meta id="twDesc" name="twitter:description" content="Read full stories, real-time news, and in-depth analysis on Boon News.">
+    <meta id="twImage" name="twitter:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TQJ25JTT');</script>
+
+    <!-- Structured Data Schema -->
+    <script type="application/ld+json" id="articleSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Boon News Article",
+      "publisher": {
+        "@type": "NewsMediaOrganization",
+        "name": "Boon News",
+        "url": "https://boonnewsng.blog",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://boonnewsng.blog/assets/images/logo.png"
+        }
+      }
+    }
+    </script>
+
+    <!-- Preconnect & Preload Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/reader.css">
+</head>
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar" id="readingProgressBar"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <button class="header-icon-btn" id="sidebarToggleBtn" aria-label="Open Navigation Sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="/" class="brand-logo" aria-label="Boon News Homepage">
+            <img src="/assets/images/logo.png" alt="Boon News Logo" class="brand-logo-img">
+        </a>
+
+        <div class="header-right-actions">
+            <button class="header-icon-btn" id="audioReadBtn" title="Listen to Article" aria-label="Listen to Article" onclick="toggleAudioReader()">
+                <i class="fa-solid fa-volume-high" id="audioIcon"></i>
+            </button>
+            <button class="header-icon-btn" id="searchToggleBtn" aria-label="Toggle Search Box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Drawer -->
+    <div class="search-drawer" id="searchDrawer">
+        <form id="searchForm" class="header-search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+            <input type="text" id="searchInput" class="search-input-field" placeholder="Search news, topics, authors..." aria-label="Search">
+            <div id="searchSuggestions" class="suggestions-overlay"></div>
+        </form>
+    </div>
+
+    <!-- Slide-Out Sidebar Navigation -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebarNav">
+        <div class="sidebar-header">
+            <a href="/" class="brand-logo" aria-label="Boon News Homepage">
+                <img src="/assets/images/logo.png" alt="Boon News Logo" class="sidebar-logo-img">
+            </a>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item"><a href="/category?c=Politics">Politics</a></li>
+            <li class="sidebar-nav-item"><a href="/category?c=Tech">Tech</a></li>
+            <li class="sidebar-nav-item"><a href="/category?c=Business">Business</a></li>
+            <li class="sidebar-nav-item"><a href="/category?c=Entertainment">Entertainment</a></li>
+            <li class="sidebar-nav-item"><a href="/category?c=Sports">Sports</a></li>
+            <li class="sidebar-nav-item"><a href="/category?c=Education">Education</a></li>
+            <li class="sidebar-nav-item"><a href="/about">About Us</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="social-icons">
+                <a href="#" class="social-icon-btn" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="social-icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-icon-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+
+            <div class="theme-switch-wrapper">
+                <span class="theme-switch-label">Switch Theme</span>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb-container">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <a href="#" id="breadcrumbCategory">Category</a>
+            <i class="fa-solid fa-chevron-right breadcrumb-separator"></i>
+            <span class="breadcrumb-current" id="breadcrumbTitle">Loading Story...</span>
+        </nav>
+    </div>
+
+    <!-- Main Reader Workspace -->
+    <main class="reader-container">
+        <article class="reader-article">
+            <!-- Skeleton Loading State -->
+            <div id="skeletonLoader">
+                <div class="skeleton" style="width: 80px; height: 20px; margin-bottom: 0.85rem;"></div>
+                <div class="skeleton" style="width: 95%; height: 32px; margin-bottom: 0.65rem;"></div>
+                <div class="skeleton" style="width: 70%; height: 32px; margin-bottom: 1.25rem;"></div>
+                <div class="skeleton" style="width: 100%; height: 40px; margin-bottom: 1.25rem; border-radius: 6px;"></div>
+                <div class="skeleton" style="width: 100%; height: 320px; margin-bottom: 1.5rem; border-radius: 6px;"></div>
+                <div class="skeleton" style="width: 100%; height: 16px; margin-bottom: 0.75rem;"></div>
+                <div class="skeleton" style="width: 95%; height: 16px; margin-bottom: 0.75rem;"></div>
+            </div>
+
+            <div id="articleContentWrapper" style="display: none;">
+                <div class="article-header">
+                    <span class="badge" id="articleCategory">NEWS</span>
+                    <h1 class="article-title" id="articleTitle">Loading Article Headline...</h1>
+                    
+                    <div class="article-meta">
+                        <div class="author-box">
+                            <img id="authorAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" class="author-avatar-img" alt="Author Avatar">
+                            <div>
+                                <div style="font-weight: 700; color: var(--text-main);" id="articleAuthor">Boon News Desk</div>
+                                <div style="font-size: 0.75rem;" id="articleDate">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div class="article-meta-group">
+                            <div class="font-sizer" title="Adjust text size">
+                                <button type="button" onclick="adjustFontSize(-1)">A-</button>
+                                <span>Size</span>
+                                <button type="button" onclick="adjustFontSize(1)">A+</button>
+                            </div>
+                            <div class="article-meta-item">
+                                <i class="fa-regular fa-clock"></i>
+                                <span><span id="readTime">3</span> min read</span>
+                            </div>
+                            <div class="article-meta-item">
+                                <i class="fa-regular fa-eye"></i>
+                                <span id="articleViews">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-featured-media">
+                    <img id="articleImage" src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80" alt="Featured Article Image" loading="eager" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80';">
+                </div>
+
+                <div class="article-content" id="articleBody">
+                    <p>Fetching full article contents...</p>
+                </div>
+
+                <div class="article-share-bar">
+                    <span style="font-weight: 600; font-size: 0.85rem;">Share story:</span>
+                    <div class="share-buttons">
+                        <button class="share-btn" onclick="shareOnPlatform('native')" aria-label="Share Article"><i class="fa-solid fa-share-nodes"></i></button>
+                        <button class="share-btn" onclick="shareOnPlatform('twitter')" aria-label="Share on X"><i class="fa-brands fa-x-twitter"></i></button>
+                        <button class="share-btn" onclick="shareOnPlatform('facebook')" aria-label="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></button>
+                        <button class="share-btn" onclick="shareOnPlatform('whatsapp')" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+                        <button class="share-btn" onclick="copyArticleLink()" aria-label="Copy Link"><i class="fa-solid fa-link"></i></button>
+                    </div>
+                </div>
+
+                <!-- Discussion & Comments -->
+                <section class="comments-section">
+                    <h3 class="widget-title">Discussion & Comments</h3>
+                    <form id="commentForm">
+                        <input type="text" id="commenterName" placeholder="Your Name" class="comment-input" required>
+                        <textarea id="commentText" rows="3" placeholder="Add your perspective..." class="comment-input" required></textarea>
+                        <button type="submit" id="commentSubmitBtn" class="comment-submit-btn">Post Comment</button>
+                    </form>
+
+                    <div class="comments-list" id="commentsList" style="margin-top: 0.85rem;">
+                        <p style="color: var(--text-muted); font-size: 0.825rem;" id="noCommentsMsg">Be the first to comment on this article.</p>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- Reader Sidebar -->
+        <aside class="reader-sidebar">
+            <div class="widget-box">
+                <h3 class="widget-title">Related Stories</h3>
+                <div id="relatedStoriesContainer">
+                    <div class="skeleton" style="width: 100%; height: 50px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="width: 100%; height: 50px;"></div>
+                </div>
+            </div>
+
+            <div class="widget-box">
+                <h3 class="widget-title">Trending Now</h3>
+                <div id="trendingWidgetContainer">
+                    <div class="skeleton" style="width: 100%; height: 45px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="width: 100%; height: 45px;"></div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <div class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <i class="fa-solid fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo-container">
+            <a href="/" aria-label="Boon News Homepage">
+                <img src="/assets/images/logo.png" alt="Boon News Logo" class="footer-logo-img">
+            </a>
+        </div>
+        <div class="footer-links">
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2026 Boon News. All rights reserved.</p>
+        <p style="margin-top: 6px;">Published via <strong>boonnewsng.blog</strong></p>
+    </footer>
+
+    <!-- Reader Logic Module -->
+    <script type="module">   
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import { 
+        getFirestore, doc, getDoc, collection, getDocs, query, orderBy, limit, updateDoc, increment, addDoc, serverTimestamp, initializeFirestore, persistentLocalCache, persistentMultipleTabManager 
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+        authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+        databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+        projectId: "primeintelmedia-e2fe3",
+        storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+        messagingSenderId: "228866357632",
+        appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+        measurementId: "G-G0HRRV932S"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      
+      let db;
+      try {
+        db = initializeFirestore(app, {
+          localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+        });
+      } catch (e) {
+        db = getFirestore(app);
+      }
+
+      const CACHE_KEY_POSTS = "boon_news_posts_cache";
+      const FALLBACK_IMG = 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200&auto=format&fit=crop&q=80';
+      const FALLBACK_AVATAR = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80';
+
+      let currentArticle = null;
+      let allPosts = [];
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const articleId = urlParams.get('id');
+
+      // Canonical Shareable URL Helper
+      function getShareableUrl() {
+          if (!articleId) return 'https://boonnewsng.blog/reader';
+          return `https://boonnewsng.blog/reader?id=${articleId}`;
+      }
+
+      // Sidebar Handlers
+      const sidebar = document.getElementById('sidebarNav');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+      const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+      const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+      function openSidebar() {
+          sidebar.classList.add('active');
+          sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebar() {
+          sidebar.classList.remove('active');
+          sidebarOverlay.classList.remove('active');
+      }
+
+      if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', openSidebar);
+      if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+      // Search Drawer Toggle
+      const searchToggleBtn = document.getElementById('searchToggleBtn');
+      const searchDrawer = document.getElementById('searchDrawer');
+
+      if (searchToggleBtn && searchDrawer) {
+          searchToggleBtn.addEventListener('click', () => {
+              searchDrawer.classList.toggle('active');
+              if (searchDrawer.classList.contains('active')) {
+                  document.getElementById('searchInput').focus();
+              }
+          });
+      }
+
+      // Dark / Light Theme Engine
+      const themeToggleBtn = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+
+      function setTheme(theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+          localStorage.setItem('boon_theme', theme);
+          if (themeIcon) {
+              themeIcon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+          }
+      }
+
+      const savedTheme = localStorage.getItem('boon_theme') || 'light';
+      setTheme(savedTheme);
+
+      if (themeToggleBtn) {
+          themeToggleBtn.addEventListener('click', () => {
+              const currentTheme = document.documentElement.getAttribute('data-theme');
+              setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+          });
+      }
+
+      window.navigateToArticle = (id) => {
+        window.location.href = `/reader?id=${id}`;
+      };
+
+      function calculateReadTime(text) {
+          if (!text) return 3;
+          const words = text.replace(/<[^>]*>/g, '').split(/\s+/).length;
+          return Math.max(1, Math.ceil(words / 200));
+      }
+
+      // Progress bar & Back to Top triggers
+      window.addEventListener('scroll', () => {
+          const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+          const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scrolled = (winScroll / height) * 100;
+          
+          const progressBar = document.getElementById("readingProgressBar");
+          if (progressBar) progressBar.style.width = scrolled + "%";
+
+          const backToTop = document.getElementById("backToTop");
+          if (backToTop) backToTop.style.display = winScroll > 300 ? "flex" : "none";
+      });
+
+      let currentFontSizeRem = 1.05;
+      window.adjustFontSize = (direction) => {
+          currentFontSizeRem += direction * 0.05;
+          currentFontSizeRem = Math.min(Math.max(currentFontSizeRem, 0.9), 1.35);
+          const bodyEl = document.getElementById("articleBody");
+          if (bodyEl) bodyEl.style.fontSize = currentFontSizeRem + "rem";
+      };
+
+      // Audio Synthesis Reader
+      window.toggleAudioReader = () => {
+        if (!('speechSynthesis' in window)) return;
+        const icon = document.getElementById('audioIcon');
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel();
+            if (icon) icon.className = "fa-solid fa-volume-high";
+        } else {
+            const bodyText = document.getElementById("articleBody").innerText;
+            const titleText = document.getElementById("articleTitle").innerText;
+            const utterance = new SpeechSynthesisUtterance(`${titleText}. ${bodyText}`);
+            utterance.onend = () => { if (icon) icon.className = "fa-solid fa-volume-high"; };
+            speechSynthesis.speak(utterance);
+            if (icon) icon.className = "fa-solid fa-pause";
+        }
+      };
+
+      // Cancel Audio Speech synthesis on navigation to prevent memory leak
+      const stopSpeech = () => {
+          if ('speechSynthesis' in window && speechSynthesis.speaking) {
+              speechSynthesis.cancel();
+          }
+      };
+      window.addEventListener('beforeunload', stopSpeech);
+      window.addEventListener('pagehide', stopSpeech);
+
+      function setupSearch() {
+        const searchForm = document.getElementById("searchForm");
+        const searchInput = document.getElementById("searchInput");
+        const searchSuggestions = document.getElementById("searchSuggestions");
+
+        const executeSearch = (term) => {
+            if (term) window.location.href = `/?search=${encodeURIComponent(term)}`;
+        };
+
+        if (searchForm) searchForm.addEventListener("submit", (e) => { e.preventDefault(); executeSearch(searchInput.value.trim()); });
+
+        const handleSearchInput = (val, container) => {
+            const term = val.toLowerCase().trim();
+            if (!term) {
+                container.style.display = "none";
+                container.innerHTML = "";
+                return;
+            }
+            const matches = allPosts.filter(post => {
+                return (post.title || "").toLowerCase().includes(term) || (post.category || "").toLowerCase().includes(term);
+            }).slice(0, 5);
+
+            if (matches.length === 0) {
+                container.innerHTML = `<div style="padding: 0.75rem; color: #64748b; font-size: 0.8rem;">No matches found.</div>`;
+            } else {
+                container.innerHTML = matches.map(post => `
+                  <div class="suggestion-item" onclick="navigateToArticle('${post.id}')">
+                    <img class="suggestion-thumb" src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+                    <div style="overflow: hidden;">
+                      <div style="font-weight: 700; font-size: 0.8rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${post.title}</div>
+                      <span class="text-accent" style="font-size: 0.65rem; text-transform: uppercase;">${post.category || 'News'}</span>
+                    </div>
+                  </div>
+                `).join('');
+            }
+            container.style.display = "block";
+        };
+
+        if (searchInput) searchInput.addEventListener("input", (e) => handleSearchInput(e.target.value, searchSuggestions));
+
+        document.addEventListener("click", (e) => {
+            if (searchSuggestions && searchForm && !searchForm.contains(e.target)) {
+                searchSuggestions.style.display = "none";
+            }
+        });
+      }
+
+      function updateSEO(post, authorName) {
+        const title = post.title || "Untitled Article";
+        const excerpt = post.excerpt || title;
+        const imgUrl = post.imageUrl || FALLBACK_IMG;
+        const canonicalUrl = getShareableUrl();
+
+        document.title = `${title} | Boon News`;
+
+        const setMetaText = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = val;
+        };
+
+        const setMetaAttr = (id, attr, val) => {
+            const el = document.getElementById(id);
+            if (el) el.setAttribute(attr, val);
+        };
+
+        setMetaText("metaTitle", `${title} | Boon News`);
+        setMetaAttr("metaDesc", "content", excerpt);
+        setMetaAttr("metaCanonical", "href", canonicalUrl);
+
+        setMetaAttr("ogTitle", "content", title);
+        setMetaAttr("ogDesc", "content", excerpt);
+        setMetaAttr("ogImage", "content", imgUrl);
+        setMetaAttr("ogUrl", "content", canonicalUrl);
+
+        setMetaAttr("twTitle", "content", title);
+        setMetaAttr("twDesc", "content", excerpt);
+        setMetaAttr("twImage", "content", imgUrl);
+        setMetaAttr("twUrl", "content", canonicalUrl);
+
+        const publishedDateStr = post.createdAt ? (post.createdAt.seconds ? new Date(post.createdAt.seconds * 1000).toISOString() : new Date(post.createdAt).toISOString()) : new Date().toISOString();
+        const schemaScript = document.getElementById("articleSchema");
+        if (schemaScript) {
+            schemaScript.textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "NewsArticle",
+                "headline": title,
+                "image": [imgUrl],
+                "datePublished": publishedDateStr,
+                "author": [{
+                    "@type": "Person",
+                    "name": authorName || "Boon News Desk"
+                }],
+                "publisher": {
+                    "@type": "NewsMediaOrganization",
+                    "name": "Boon News",
+                    "url": "https://boonnewsng.blog",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://boonnewsng.blog/assets/images/logo.png"
+                    }
+                }
+            });
+        }
+      }
+
+      async function fetchAuthorDetails(authorRefId) {
+          if (!authorRefId) return { name: "Boon News Desk", avatar: FALLBACK_AVATAR };
+          try {
+              const authorDocRef = doc(db, "authors", authorRefId);
+              const authorSnap = await getDoc(authorDocRef);
+              if (authorSnap.exists()) {
+                  const data = authorSnap.data();
+                  return {
+                      name: data.name || "Boon News Desk",
+                      avatar: data.avatar || data.imageUrl || FALLBACK_AVATAR
+                  };
+              }
+          } catch(e) {}
+          return { name: authorRefId, avatar: FALLBACK_AVATAR };
+      }
+
+      async function initReaderEngine() {
+        const cachedPosts = localStorage.getItem(CACHE_KEY_POSTS);
+        if (cachedPosts) {
+            try {
+                allPosts = JSON.parse(cachedPosts);
+                renderSidebarWidgets();
+                setupSearch();
+                
+                const matchedCachedPost = allPosts.find(p => p.id === articleId);
+                if (matchedCachedPost) {
+                    currentArticle = matchedCachedPost;
+                    renderArticle(currentArticle);
+                }
+            } catch(e){}
+        }
+
+        if (!articleId) {
+            renderError("No article specified. Return home to choose a news story.");
+            return;
+        }
+
+        try {
+            const docRef = doc(db, "newsPosts", articleId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                currentArticle = { id: docSnap.id, ...docSnap.data() };
+                renderArticle(currentArticle);
+                incrementViews(docRef);
+                fetchComments();
+            } else if (!currentArticle) {
+                renderError("The requested news article could not be found.");
+            }
+        } catch (err) {
+            if (!currentArticle) {
+                renderError("Unable to load article due to a network connection issue.");
+            }
+        }
+
+        try {
+            const postsSnap = await getDocs(query(collection(db, "newsPosts"), orderBy("createdAt", "desc"), limit(25)));
+            allPosts = [];
+            postsSnap.forEach(docSnap => {
+                allPosts.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            localStorage.setItem(CACHE_KEY_POSTS, JSON.stringify(allPosts));
+            renderSidebarWidgets();
+            setupSearch();
+        } catch(e) {}
+      }
+
+      async function renderArticle(post) {
+        const skeleton = document.getElementById("skeletonLoader");
+        const wrapper = document.getElementById("articleContentWrapper");
+        
+        if (skeleton && skeleton.style.display !== "none") {
+            skeleton.style.display = "none";
+            wrapper.style.display = "block";
+            wrapper.classList.add("fade-in");
+        }
+
+        const title = post.title || "Untitled Article";
+        const rawContent = post.content || post.body || post.excerpt || "No content available.";
+        const category = post.category || "News";
+        const imgUrl = post.imageUrl || FALLBACK_IMG;
+        const views = (post.views || post.viewCount || 0) + 1;
+
+        const authorKey = post.authorId || post.author || "";
+        const authorDetails = await fetchAuthorDetails(authorKey);
+
+        updateSEO(post, authorDetails.name);
+
+        const breadcrumbCat = document.getElementById("breadcrumbCategory");
+        const breadcrumbTitle = document.getElementById("breadcrumbTitle");
+        if (breadcrumbCat) {
+            breadcrumbCat.innerText = category;
+            breadcrumbCat.href = `/category?c=${encodeURIComponent(category)}`;
+        }
+        if (breadcrumbTitle) {
+            breadcrumbTitle.innerText = title;
+        }
+
+        document.getElementById("articleCategory").innerText = category;
+        document.getElementById("articleTitle").innerText = title;
+        document.getElementById("articleAuthor").innerText = authorDetails.name;
+        document.getElementById("authorAvatar").src = authorDetails.avatar;
+        document.getElementById("articleImage").src = imgUrl;
+        document.getElementById("articleViews").innerText = views.toLocaleString();
+        document.getElementById("readTime").innerText = calculateReadTime(rawContent);
+        
+        if (post.createdAt) {
+            let dateObj = post.createdAt.seconds ? new Date(post.createdAt.seconds * 1000) : new Date(post.createdAt);
+            document.getElementById("articleDate").innerText = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        const formattedContent = rawContent.includes("<p>") ? rawContent : rawContent.split(/\n\n+/).map(p => `<p>${p.trim()}</p>`).join('');
+        document.getElementById("articleBody").innerHTML = formattedContent;
+      }
+
+      async function incrementViews(docRef) {
+        try {
+            await updateDoc(docRef, { views: increment(1) });
+        } catch(e) {}
+      }
+
+      function renderSidebarWidgets() {
+        const relatedContainer = document.getElementById("relatedStoriesContainer");
+        const trendingContainer = document.getElementById("trendingWidgetContainer");
+
+        if (!allPosts || allPosts.length === 0) return;
+
+        let related = allPosts.filter(p => p.id !== articleId && (currentArticle ? p.category === currentArticle.category : true)).slice(0, 4);
+        if (related.length === 0) related = allPosts.filter(p => p.id !== articleId).slice(0, 4);
+
+        if (relatedContainer) {
+            relatedContainer.innerHTML = related.map(post => `
+                <div class="related-item" onclick="navigateToArticle('${post.id}')">
+                    <img src="${post.imageUrl || FALLBACK_IMG}" class="related-img" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+                    <div style="overflow: hidden;">
+                        <span style="font-size: 0.65rem; color: var(--accent-color); font-weight: 700; text-transform: uppercase;">${post.category || 'News'}</span>
+                        <div class="related-text-title">${post.title}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const trending = [...allPosts].sort((a,b) => (b.views || 0) - (a.views || 0)).slice(0, 4);
+        if (trendingContainer) {
+            trendingContainer.innerHTML = trending.map((post, idx) => `
+                <div class="related-item" onclick="navigateToArticle('${post.id}')">
+                    <span style="font-size: 1.1rem; font-weight: 800; color: var(--accent-color); font-family: 'Outfit';">0${idx + 1}</span>
+                    <div style="overflow: hidden;">
+                        <div class="related-text-title">${post.title}</div>
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">${post.views || 0} readers</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+      }
+
+      function renderError(message) {
+        const skeleton = document.getElementById("skeletonLoader");
+        if (skeleton) skeleton.style.display = "none";
+        
+        const wrapper = document.getElementById("articleContentWrapper");
+        if (wrapper) {
+            wrapper.style.display = "block";
+            wrapper.innerHTML = `
+                <div style="text-align: center; padding: 2rem 1rem;">
+                    <i class="fa-solid fa-circle-exclamation" style="font-size: 2.2rem; color: var(--accent-color); margin-bottom: 0.75rem;"></i>
+                    <h2>Article Not Found</h2>
+                    <p style="color: var(--text-muted); margin-top: 6px; font-size: 0.9rem;">${message}</p>
+                    <a href="/" style="display: inline-block; margin-top: 1rem; background: var(--accent-color); color: white; padding: 8px 18px; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">Back to Home</a>
+                </div>
+            `;
+        }
+      }
+
+      const commentForm = document.getElementById("commentForm");
+      if (commentForm) {
+          commentForm.addEventListener("submit", async (e) => {
+              e.preventDefault();
+              const nameInput = document.getElementById("commenterName");
+              const textInput = document.getElementById("commentText");
+              const submitBtn = document.getElementById("commentSubmitBtn");
+
+              const name = nameInput.value.trim();
+              const text = textInput.value.trim();
+
+              if (!name || !text || !articleId) return;
+
+              const lastCommentTime = localStorage.getItem("last_comment_time");
+              if (lastCommentTime && Date.now() - parseInt(lastCommentTime) < 15000) {
+                  alert("Please wait 15 seconds before posting another comment.");
+                  return;
+              }
+
+              submitBtn.disabled = true;
+              submitBtn.innerText = "Posting...";
+
+              try {
+                  const commentsRef = collection(db, "newsPosts", articleId, "comments");
+                  await addDoc(commentsRef, {
+                      authorName: name,
+                      comment: text,
+                      timestamp: serverTimestamp()
+                  });
+
+                  localStorage.setItem("last_comment_time", Date.now().toString());
+                  nameInput.value = "";
+                  textInput.value = "";
+                  await fetchComments();
+              } catch (err) {
+                  console.error("Error submitting comment:", err);
+              } finally {
+                  submitBtn.disabled = false;
+                  submitBtn.innerText = "Post Comment";
+              }
+          });
+      }
+
+      async function fetchComments() {
+          if (!articleId) return;
+          try {
+              const commentsRef = collection(db, "newsPosts", articleId, "comments");
+              const q = query(commentsRef, orderBy("timestamp", "desc"));
+              const snap = await getDocs(q);
+              const commentsList = document.getElementById("commentsList");
+
+              if (!commentsList) return;
+
+              if (snap.empty) {
+                  commentsList.innerHTML = `<p style="color: var(--text-muted); font-size: 0.825rem;" id="noCommentsMsg">Be the first to comment on this article.</p>`;
+                  return;
+              }
+
+              commentsList.innerHTML = "";
+              snap.forEach(docSnap => {
+                  const data = docSnap.data();
+                  const time = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Just now';
+                  
+                  const div = document.createElement("div");
+                  div.className = "comment-item";
+                  div.innerHTML = `
+                      <div class="comment-header">
+                          <strong style="color: var(--text-main);">${data.authorName}</strong>
+                          <span>${time}</span>
+                      </div>
+                      <p style="font-size: 0.875rem; color: var(--text-main);">${data.comment}</p>
+                  `;
+                  commentsList.appendChild(div);
+              });
+          } catch(e){}
+      }
+
+      window.shareOnPlatform = async (platform) => {
+          const url = getShareableUrl();
+          const title = currentArticle ? currentArticle.title : "Boon News";
+
+          if (platform === 'native') {
+              if (navigator.share) {
+                  try {
+                      await navigator.share({ title, url });
+                      return;
+                  } catch (err) {}
+              } else {
+                  copyArticleLink();
+                  return;
+              }
+          }
+
+          let shareUrl = "";
+          if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+          if (platform === 'facebook') shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+          if (platform === 'whatsapp') shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(title)}%20${encodeURIComponent(url)}`;
+
+          if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
+      };
+
+      window.copyArticleLink = () => {
+          const shareUrl = getShareableUrl();
+          navigator.clipboard.writeText(shareUrl);
+          
+          const toast = document.createElement('div');
+          toast.innerText = "Link copied to clipboard!";
+          toast.style.cssText = "position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#0f172a; color:#fff; padding:6px 14px; border-radius:6px; font-size:0.8rem; z-index:2000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 2500);
+      };
+
+      initReaderEngine();
+    </script>
+
+</body>
+</html>

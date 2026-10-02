@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category | Boon News</title>
+    <meta name="robots" content="index, follow">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/category.css">
+</head>
+<body>
+
+    <header>
+        <button class="header-icon-btn" id="sidebarToggleBtn" aria-label="Open Navigation Sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="/" class="brand-logo" aria-label="Boon News Homepage">
+            <img src="/assets/images/logo.png" alt="Boon News Logo" class="brand-logo-img">
+        </a>
+
+        <div class="header-right-actions">
+            <button class="header-icon-btn" id="searchToggleBtn" aria-label="Toggle Search Box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Off-Canvas Sidebar Navigation -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebarNav">
+        <div class="sidebar-header">
+            <a href="/" class="brand-logo" style="font-size: 1.25rem;"><b>Boon</b><span>News</span></a>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-nav-list" id="sidebarCategoriesContainer">
+            <!-- Dynamic categories populated via JS -->
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="theme-switch-wrapper">
+                <span class="theme-switch-label">Switch Theme</span>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <div class="category-header">
+            <h1 class="category-title" id="categoryNameTitle">Category</h1>
+            <p class="category-meta-count" id="categoryCountText">Loading posts...</p>
+        </div>
+
+        <!-- Category Render Container -->
+        <div id="categoryPostsContainer"></div>
+
+        <!-- Pagination Controls -->
+        <nav class="pagination-bar" id="paginationBar" style="display: none;"></nav>
+    </main>
+
+  <footer>
+        <div class="footer-logo-container">
+            <a href="/" aria-label="Boon News Homepage">
+                <img src="/assets/images/logo.png" alt="Boon News Logo" class="footer-logo-img">
+            </a>
+        </div>
+        <div class="footer-links">
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </div>
+        <p>&copy; 2026 Boon News. All rights reserved.</p>
+        <p style="margin-top: 6px;">Published via <strong>boonnewsng.blog</strong></p>
+    </footer>
+
+    <script type="module"> 
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+        authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+        databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+        projectId: "primeintelmedia-e2fe3",
+        storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+        messagingSenderId: "228866357632",
+        appId: "1:228866357632:web:72dc9942f1cd41d857a965"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const POSTS_PER_PAGE = 10;
+      const FALLBACK_IMG = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+
+      let categoryPosts = [];
+      let currentPage = 1;
+      let targetCategory = '';
+
+      function getPostTime(post) {
+        if (!post.createdAt) return 0;
+        if (typeof post.createdAt === 'number') return post.createdAt;
+        if (typeof post.createdAt.toMillis === 'function') return post.createdAt.toMillis();
+        if (post.createdAt.seconds) return post.createdAt.seconds * 1000;
+        return new Date(post.createdAt).getTime() || 0;
+      }
+
+      function formatDate(postTime) {
+        const timeMs = getPostTime({ createdAt: postTime });
+        if (!timeMs) return 'Recently';
+        const dateObj = new Date(timeMs);
+        if (isNaN(dateObj.getTime())) return 'Recently';
+
+        return dateObj.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+      }
+
+      function navigateToArticle(id) {
+        window.location.href = `/read?id=${id}`;
+      }
+      window.navigateToArticle = navigateToArticle;
+
+      function getCategoryFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('c') || params.get('category') || 'General';
+      }
+
+      // Sidebar Event Listeners
+      const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+      const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+      const sidebarNav = document.getElementById('sidebarNav');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+      if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', () => {
+          sidebarNav.classList.add('active');
+          sidebarOverlay.classList.add('active');
+      });
+
+      if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+      if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+      function closeSidebar() {
+          sidebarNav.classList.remove('active');
+          sidebarOverlay.classList.remove('active');
+      }
+
+      // Dark Theme Toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      if (localStorage.getItem('boon_theme') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (themeIcon) themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      if (themeToggle) {
+          themeToggle.addEventListener('click', () => {
+              const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+              if (isDark) {
+                  document.documentElement.removeAttribute('data-theme');
+                  themeIcon.classList.replace('fa-sun', 'fa-moon');
+                  localStorage.setItem('boon_theme', 'light');
+              } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                  themeIcon.classList.replace('fa-moon', 'fa-sun');
+                  localStorage.setItem('boon_theme', 'dark');
+              }
+          });
+      }
+
+      // Render Layout View
+      function renderCategoryView(page = 1) {
+        currentPage = page;
+        const container = document.getElementById('categoryPostsContainer');
+        if (!container) return;
+
+        if (categoryPosts.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <i class="fa-solid fa-folder-open"></i>
+                <h2>No Posts Found</h2>
+                <p>No stories published under "${targetCategory}" yet.</p>
+              </div>`;
+            document.getElementById('paginationBar').style.display = 'none';
+            return;
+        }
+
+        categoryPosts.sort((a, b) => getPostTime(b) - getPostTime(a));
+
+        const startIndex = (page - 1) * POSTS_PER_PAGE;
+        const pagePosts = categoryPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+        const topHeroPost = pagePosts[0];
+        const topGridPosts = pagePosts.slice(1, 3);
+        const bottomListPosts = pagePosts.slice(3, 10);
+
+        let html = '';
+
+        if (topHeroPost) {
+            html += `
+              <article class="featured-hero-card" onclick="navigateToArticle('${topHeroPost.id}')">
+                <div class="hero-img-frame">
+                  <img src="${topHeroPost.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${topHeroPost.title}">
+                </div>
+                <div class="hero-content">
+                  <div class="meta-line">
+                    <span class="cat-name">${topHeroPost.category}</span> • ${formatDate(topHeroPost.createdAt)}
+                  </div>
+                  <h2 class="hero-title">${topHeroPost.title}</h2>
+                </div>
+              </article>
+            `;
+        }
+
+        if (topGridPosts.length > 0) {
+            html += `<div class="posts-two-grid">`;
+            topGridPosts.forEach(post => {
+                html += `
+                  <article class="grid-card" onclick="navigateToArticle('${post.id}')">
+                    <div class="grid-img-frame">
+                      <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+                    </div>
+                    <div class="grid-card-body">
+                      <div class="meta-line">
+                        <span class="cat-name">${post.category}</span>
+                      </div>
+                      <h3 class="grid-card-title">${post.title}</h3>
+                    </div>
+                  </article>
+                `;
+            });
+            html += `</div>`;
+        }
+
+        if (bottomListPosts.length > 0) {
+            html += `<ul class="mini-post-list">`;
+            bottomListPosts.forEach(post => {
+                html += `
+                  <li class="mini-post-item" onclick="navigateToArticle('${post.id}')">
+                    <div class="mini-img-frame">
+                      <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+                    </div>
+                    <div class="mini-content">
+                      <div class="meta-line">
+                        <span class="cat-name">${post.category}</span> • ${formatDate(post.createdAt)}
+                      </div>
+                      <h4 class="mini-title">${post.title}</h4>
+                    </div>
+                  </li>
+                `;
+            });
+            html += `</ul>`;
+        }
+
+        container.innerHTML = html;
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function renderPagination() {
+        const paginationBar = document.getElementById('paginationBar');
+        const totalPages = Math.ceil(categoryPosts.length / POSTS_PER_PAGE);
+
+        if (totalPages <= 1) {
+            paginationBar.style.display = 'none';
+            return;
+        }
+
+        paginationBar.style.display = 'flex';
+        let navHtml = '';
+
+        navHtml += `
+          <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+            navHtml += `
+              <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+                ${i}
+              </button>
+            `;
+        }
+
+        navHtml += `
+          <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        `;
+
+        paginationBar.innerHTML = navHtml;
+      }
+
+      window.changePage = (newPage) => {
+        const totalPages = Math.ceil(categoryPosts.length / POSTS_PER_PAGE);
+        if (newPage >= 1 && newPage <= totalPages) {
+            renderCategoryView(newPage);
+        }
+      };
+
+      function populateSidebarCategories(allFetched) {
+        const container = document.getElementById('sidebarCategoriesContainer');
+        if (!container) return;
+
+        const uniqueCats = [...new Set(
+            allFetched
+                .map(p => p.category ? p.category.trim() : null)
+                .filter(Boolean)
+        )];
+
+        let html = uniqueCats.map(cat => {
+            const isCurrent = cat.toLowerCase() === targetCategory.trim().toLowerCase();
+            return `
+              <li class="sidebar-nav-item">
+                <a href="/category?c=${encodeURIComponent(cat)}" style="${isCurrent ? 'color: var(--accent-color); font-weight:700;' : ''}">
+                  <i class="fa-solid fa-folder"></i> ${cat}
+                </a>
+              </li>
+            `;
+        }).join('');
+
+        html += `
+          <li style="border-top: 1px solid var(--border-color); margin: 10px 0;"></li>
+          <li class="sidebar-nav-item"><a href="/about"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+          <li class="sidebar-nav-item"><a href="/contact"><i class="fa-solid fa-envelope"></i> Contact Us</a></li>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      async function loadCategoryPosts() {
+        targetCategory = getCategoryFromURL();
+        document.getElementById('categoryNameTitle').textContent = targetCategory;
+        document.title = `${targetCategory} | Boon News`;
+
+        try {
+            const postsSnap = await getDocs(query(collection(db, "newsPosts"), orderBy("createdAt", "desc")));
+            const allFetched = [];
+
+            postsSnap.forEach(docSnap => {
+                const p = docSnap.data();
+                allFetched.push({
+                    id: docSnap.id,
+                    title: p.title || 'Untitled',
+                    category: (p.category || 'General').trim(),
+                    imageUrl: p.imageUrl || '',
+                    createdAt: p.createdAt || null
+                });
+            });
+
+            populateSidebarCategories(allFetched);
+
+            categoryPosts = allFetched.filter(p => 
+                p.category.toLowerCase() === targetCategory.trim().toLowerCase()
+            );
+
+            document.getElementById('categoryCountText').textContent = `${categoryPosts.length} ${categoryPosts.length === 1 ? 'story' : 'stories'} published`;
+            
+            renderCategoryView(1);
+
+        } catch (err) {
+            console.error("Error loading category posts:", err);
+            document.getElementById('categoryCountText').textContent = "Failed to load posts.";
+        }
+      }
+
+      loadCategoryPosts();
+  </script>
+
+</body>
+</html>

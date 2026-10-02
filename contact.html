@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Core SEO & Social Metadata (Updated to clean URLs) -->
+  <title>Contact Us | Boon News</title>
+  <meta name="description" content="Get in touch with the Boon News editorial team, advertising department, or support desk. Send inquiries, press releases, or news tips.">
+  <link rel="canonical" href="https://boonnewsng.blog/contact">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://boonnewsng.blog/contact">
+  <meta property="og:title" content="Contact Us | Boon News">
+  <meta property="og:description" content="Get in touch with Boon News for inquiries, editorial feedback, news tips, or advertising opportunities.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://boonnewsng.blog/contact">
+  <meta name="twitter:title" content="Contact Us | Boon News">
+  <meta name="twitter:description" content="Get in touch with Boon News for inquiries, editorial feedback, news tips, or advertising opportunities.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80">
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- JSON-LD Structured Data for Contact Page -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Us - Boon News",
+    "url": "https://boonnewsng.blog/contact",
+    "description": "Contact page for Boon News newsroom, support, and media inquiries.",
+    "publisher": {
+      "@type": "NewsMediaOrganization",
+      "name": "Boon News",
+      "url": "https://boonnewsng.blog",
+      "logo": "https://boonnewsng.blog/assets/images/logo.png"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/contact.css">
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header>
+    <button class="header-icon-btn" id="sidebarToggleBtn" aria-label="Open Navigation Sidebar">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="/" class="brand-logo" aria-label="Boon News Homepage">
+        <img src="/assets/images/logo.png" alt="Boon News Logo" class="brand-logo-img">
+    </a>
+
+    <div class="header-right-actions">
+        <button class="header-icon-btn" id="searchToggleBtn" aria-label="Toggle Search Box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+  </header>
+
+  <!-- Search Drawer -->
+  <div class="search-drawer" id="searchDrawer">
+    <form id="searchForm" class="header-search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+      <input type="text" id="searchInput" class="search-input-field" placeholder="Search news, topics, authors..." aria-label="Search">
+      <div id="searchSuggestions" class="suggestions-overlay"></div>
+    </form>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebarNav">
+    <div class="sidebar-header">
+      <a href="/" class="brand-logo" aria-label="Boon News Homepage">
+          <img src="/assets/images/logo.png" alt="Boon News Logo" class="sidebar-logo-img">
+      </a>
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <ul class="sidebar-nav-list">
+      <li class="sidebar-nav-item"><a href="/category?c=Politics">Politics</a></li>
+      <li class="sidebar-nav-item"><a href="/category?c=Tech">Tech</a></li>
+      <li class="sidebar-nav-item"><a href="/category?c=Business">Business</a></li>
+      <li class="sidebar-nav-item"><a href="/category?c=Entertainment">Entertainment</a></li>
+      <li class="sidebar-nav-item"><a href="/category?c=Sports">Sports</a></li>
+      <li class="sidebar-nav-item"><a href="/category?c=Education">Education</a></li>
+      <li class="sidebar-nav-item"><a href="/about">About Us</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="social-icons">
+        <a href="#" class="social-icon-btn" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" class="social-icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-icon-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      </div>
+      <div class="theme-switch-wrapper">
+        <span class="theme-switch-label">Switch Theme</span>
+        <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Banner -->
+    <section class="contact-hero">
+      <span class="badge">Get In Touch</span>
+      <h1 class="contact-hero-title">We’re Here to Listen</h1>
+      <p class="contact-hero-subtitle">
+        Have a breaking news tip, feedback on an article, or an advertising inquiry? Reach out to our team directly.
+      </p>
+    </section>
+
+    <!-- Communication Channels -->
+    <section class="contact-channels-grid">
+      <div class="channel-card">
+        <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+        <h3 class="channel-title">Direct Email</h3>
+        <span class="text-accent"><a href="mailto:contact@boonnewsng.blog">contact@boonnewsng.blog</a></span>
+        <p class="text-accent"><a href="mailto:editorial@boonnewsng.blog">editorial@boonnewsng.blog</a></p>
+        <span class="channel-subtext">Direct response within 24 hours</span>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-icon"><i class="fa-solid fa-newspaper"></i></div>
+        <h3 class="channel-title">Press & News Desk</h3>
+        <span class="channel-subtext">Send press releases, corrections, and verified editorial tips directly to our editors.</span>
+      </div>
+
+      <div class="channel-card">
+        <div class="channel-icon"><i class="fa-solid fa-bullhorn"></i></div>
+        <h3 class="channel-title">Advertising & Media</h3>
+        <span class="channel-subtext">Inquire about sponsored posts, banner placements, and brand collaboration opportunities.</span>
+      </div>
+    </section>
+
+    <!-- Main Contact Form Split -->
+    <section class="contact-layout">
+      <div class="contact-form-card">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem;">Send Us a Message</h2>
+        
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="senderName" class="form-label">Your Name</label>
+              <input type="text" id="senderName" class="form-input" placeholder="e.g. John Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="senderEmail" class="form-label">Your Email</label>
+              <input type="email" id="senderEmail" class="form-input" placeholder="name@domain.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inquiryType" class="form-label">Inquiry Department</label>
+            <select id="inquiryType" class="form-select">
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="News Tip / Editorial">News Tip / Article Feedback</option>
+              <option value="Advertising / Sponsorship">Advertising & Partnerships</option>
+              <option value="Technical Issue">Website Technical Issue</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="messageSubject" class="form-label">Subject</label>
+            <input type="text" id="messageSubject" class="form-input" placeholder="Brief message subject..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="messageBody" class="form-label">Message</label>
+            <textarea id="messageBody" class="form-textarea" placeholder="Type your message here..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <i class="fa-regular fa-paper-plane"></i> Send Message
+          </button>
+
+          <div id="formStatus" class="form-status"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Sponsored Ad Slot -->
+    <div class="ad-slot">
+      <p><strong>SPONSORED ADVERTISEMENT</strong></p>
+      <p style="margin-top: 4px;">Reach thousands of daily readers on Boon News. Contact our advertising desk.</p>
+    </div>
+  </main>
+
+  <!-- Footer (Updated to clean URLs) -->
+  <footer>
+    <div class="footer-logo-container">
+      <a href="/" aria-label="Boon News Homepage">
+        <img src="/assets/images/logo.png" alt="Boon News Logo" class="footer-logo-img">
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="/about">About Us</a>
+      <a href="/contact">Contact</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
+    <p>&copy; 2026 Boon News. All rights reserved.</p>
+    <p style="margin-top: 6px;">Published via <strong>boonnewsng.blog</strong></p>
+  </footer>
+
+  <!-- Firebase App Engine Script -->
+  <script type="module">  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+      authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+      databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+      projectId: "primeintelmedia-e2fe3",
+      storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+      messagingSenderId: "228866357632",
+      appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+      measurementId: "G-G0HRRV932S"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Global Navigation (Updated to clean reader URL)
+    window.navigateToArticle = (id) => {
+      window.location.href = `/reader?id=${id}`;
+    };
+
+    // Sidebar Logic
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+    const sidebarNav = document.getElementById('sidebarNav');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function openSidebar() {
+      sidebarNav.classList.add('active');
+      sidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebarNav.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); openSidebar(); });
+    if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); closeSidebar(); });
+    if (sidebarOverlay) {
+      sidebarOverlay.addEventListener('click', closeSidebar);
+      sidebarOverlay.addEventListener('touchstart', closeSidebar, { passive: true });
+    }
+
+    // Search Drawer Logic
+    const searchToggleBtn = document.getElementById('searchToggleBtn');
+    const searchDrawer = document.getElementById('searchDrawer');
+    const searchInput = document.getElementById('searchInput');
+
+    if (searchToggleBtn && searchDrawer) {
+      searchToggleBtn.addEventListener('click', () => {
+        searchDrawer.classList.toggle('active');
+        if (searchDrawer.classList.contains('active') && searchInput) {
+          searchInput.focus();
+        }
+      });
+    }
+
+    // Theme Switcher Logic
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const currentTheme = localStorage.getItem('boon_theme') || 'light';
+
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      if (themeIcon) themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          themeIcon.classList.replace('fa-sun', 'fa-moon');
+          localStorage.setItem('boon_theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+          localStorage.setItem('boon_theme', 'dark');
+        }
+      });
+    }
+
+    // Contact Form Submission Handler
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const formStatus = document.getElementById('formStatus');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
+
+        const name = document.getElementById('senderName').value.trim();
+        const email = document.getElementById('senderEmail').value.trim();
+        const department = document.getElementById('inquiryType').value;
+        const subject = document.getElementById('messageSubject').value.trim();
+        const message = document.getElementById('messageBody').value.trim();
+
+        try {
+          await addDoc(collection(db, "inquiries"), {
+            name,
+            email,
+            department,
+            subject,
+            message,
+            createdAt: serverTimestamp()
+          });
+
+          formStatus.className = "form-status success";
+          formStatus.textContent = "Thank you! Your message has been sent successfully. Our team will contact you shortly.";
+          contactForm.reset();
+        } catch (error) {
+          console.error("Error submitting contact message:", error);
+          formStatus.className = "form-status error"; 
+          formStatus.textContent = "Unable to submit your message right now. Please try emailing us directly.";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-regular fa-paper-plane"></i> Send Message`;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
