@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Search Meta Tags -->
+    <title> Latest News, Insights & In-Depth Reports | Boon News </title>
+    <meta name="title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="keywords" content="Boon News, news, trending news, latest updates, blog, analysis, opinion, Nigerian news">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://boonnewsng.blog/index.html">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://boonnewsng.blog/index.html">
+    <meta property="og:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta property="og:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta property="og:image" content="https://boonnewsng.blog/boon-news-og-banner.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Boon News">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://boonnewsng.blog/index.html">
+    <meta name="twitter:title" content="Boon News | Latest News, Insights & In-Depth Reports">
+    <meta name="twitter:description" content="Stay informed with Boon News for real-time headlines, in-depth analysis, and trending stories across business, technology, politics, and culture.">
+    <meta name="twitter:image" content="https://boonnewsng.blog/boon-news-og-banner.jpg">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TQJ25JTT');</script>
+    <!-- End Google Tag Manager -->
+  
+    <!-- Structured Data for Google News & Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsMediaOrganization",
+      "name": "Boon News",
+      "url": "https://boonnewsng.blog/index.html",
+      "logo": "https://boonnewsng.blog/boon-news-og-banner.jpg",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61570604278953",
+        "https://youtube.com/@boonnews"
+      ]
+    }
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <button class="header-icon-btn" id="sidebarToggleBtn" aria-label="Open Navigation Sidebar">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="/index.html" class="brand-logo" aria-label="Boon News Homepage">
+            <img src="assets/images/logo.png" alt="Boon News Logo" class="brand-logo-img">
+        </a>
+
+        <div class="header-right-actions">
+            <button class="header-icon-btn" id="searchToggleBtn" aria-label="Toggle Search Box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Collapsible Search Box Drawer -->
+    <div class="search-drawer" id="searchDrawer">
+        <form id="searchForm" class="header-search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+            <input type="text" id="searchInput" class="search-input-field" placeholder="Search news, topics, authors..." aria-label="Search">
+            <div id="searchSuggestions" class="suggestions-overlay"></div>
+        </form>
+    </div>
+
+    <!-- Slide-Out Sidebar Navigation & Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebarNav">
+        <div class="sidebar-header">
+            <a href="/index.html" class="brand-logo" aria-label="Boon News Homepage">
+                <img src="assets/images/logo.png" alt="Boon News Logo" class="sidebar-logo-img">
+            </a>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item"><a href="/category.html?c=Politics">Politics</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Tech">Tech</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Business">Business</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Entertainment">Entertainment</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Opinion">Opinion</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Sports">Sports</a></li>
+            <li class="sidebar-nav-item"><a href="/category.html?c=Education">Education</a></li>
+            <li class="sidebar-nav-item"><a href="/about.html">About Us</a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/profile.php?id=61570604278953" target="_blank" class="social-icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://youtube.com/@boonnews" target="_blank" class="social-icon-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+
+            <div class="theme-switch-wrapper">
+                <span class="theme-switch-label">Switch Theme</span>
+                <button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Category Filter Bar with Direct Page Navigation -->
+    <div class="filter-header-bar">
+        <nav class="category-bar">
+            <a href="/index.html" class="pill active">All Stories</a>
+            <a href="/category.html?c=Politics" class="pill">Politics</a>
+            <a href="/category.html?c=Tech" class="pill">Tech</a>
+            <a href="/category.html?c=Business" class="pill">Business</a>
+            <a href="/category.html?c=Entertainment" class="pill">Entertainment</a>
+            <a href="/category.html?c=Opinion" class="pill">Opinion</a>
+            <a href="/category.html?c=Sports" class="pill">Sports</a>
+            <a href="/category.html?c=Education" class="pill">Education</a>
+            <a href="/category.html?c=Others" class="pill">Others</a>
+        </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>
+
+        <!-- 1. HERO SPOTLIGHT SECTION -->
+        <section class="hero-spotlight">
+            <article class="hero-main" id="heroLeftContainer">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <h2 class="hero-title">Loading Featured Story...</h2>
+                    <div class="hero-meta">
+                        <span class="hero-category">TOP STORY</span>
+                    </div>
+                </div>
+            </article>
+
+            <div class="hero-sidebar">
+                <h3 class="section-title" style="margin-bottom: 0.2rem;">Trending</h3>
+                <div id="heroRightContainer" style="display: flex; flex-direction: column; gap: 5px;">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LATEST NEWS GRID -->
+        <section>
+            <h2 class="section-title">Latest Stories</h2>
+            <div class="news-grid" id="newsGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+      
+        <!-- 2. EDITOR'S PICKS HORIZONTAL LIST SECTION -->
+        <section class="list-section">
+            <h2 class="section-title">Editor's Picks</h2>
+            <div class="list-container" id="editorsChoiceContainer">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- 4. STAGGERED / MASONRY FEATURE SECTION -->
+        <section class="staggered-section">
+            <h2 class="section-title">Deep Dives & In-Depth Analysis</h2>
+            <div class="staggered-grid" id="staggeredContainer">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- 5. SPEED READS QUICK BRIEFS SECTION -->
+        <section class="briefs-section">
+            <h2 class="section-title" style="margin-bottom: 1.25rem;">Speed Reads (1-Minute Briefings)</h2>
+            <ul class="briefs-list" id="briefsContainer">
+                <!-- Rendered by JS -->
+            </ul>
+        </section>
+
+        <!-- 6. MAGAZINE DUAL-SPLIT SECTION -->
+        <section class="magazine-section">
+            <h2 class="section-title">Magazine Spotlight</h2>
+            <div class="magazine-layout" id="magazineContainer">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- 7. HORIZONTAL SCROLL CAROUSEL SECTION -->
+        <section class="carousel-section">
+            <h2 class="section-title">Trending In Sports & Media</h2>
+            <div class="carousel-track" id="carouselContainer">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- 8. VIDEO SHOWCASE SECTION -->
+        <section class="video-section">
+            <h2 class="section-title">Video Coverage</h2>
+            <div class="video-grid" id="videoContainer">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- 9. OPINION COLUMNS & NEWSLETTER SECTION -->
+        <section class="middle-split">
+            <div>
+                <h2 class="section-title">Opinion & Analysis</h2>
+                <div class="opinion-list" id="opinionContainer">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Newsletter Subscription Box -->
+            <div class="newsletter-card">
+                <i class="fa-regular fa-paper-plane" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 0.5rem;"></i>
+                <h3 style="font-size: 1.2rem; font-weight: 700;">Stay Updated Daily</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Get top headlines and curated stories delivered directly to your inbox.</p>
+                <input type="email" placeholder="Enter your email address" class="newsletter-input" aria-label="Email Address">
+                <button class="newsletter-btn">Subscribe Now</button>
+            </div>
+        </section>
+
+        <!-- 10. SPONSORED AD SLOT -->
+        <div class="ad-slot">
+            <p><strong>SPONSORED ADVERTISEMENT</strong></p>
+            <p style="margin-top: 4px;">Reach thousands of daily readers on Boon News. Contact our advertising desk.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo-container">
+            <a href="/index.html" aria-label="Boon News Homepage">
+                <img src="assets/images/logo.png" alt="Boon News Logo" class="footer-logo-img">
+            </a>
+        </div>
+        <div class="footer-links">
+            <a href="/about.html">About Us</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+        </div>
+        <p>&copy; 2026 Boon News. All rights reserved.</p>
+        <p style="margin-top: 8px;">Published via <strong>boonnewsng.blog</strong></p>
+    </footer>
+
+    <!-- Firebase App Engine Script -->
+    <script type="module"> 
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+      import { 
+        getFirestore, collection, getDocs, query, orderBy, limit 
+      } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfoxEnVep0wX5V_KVS-cd8o5sUMvrFY4c",
+        authDomain: "primeintelmedia-e2fe3.firebaseapp.com",
+        databaseURL: "https://primeintelmedia-e2fe3-default-rtdb.firebaseio.com",
+        projectId: "primeintelmedia-e2fe3",
+        storageBucket: "primeintelmedia-e2fe3.firebasestorage.app",
+        messagingSenderId: "228866357632",
+        appId: "1:228866357632:web:72dc9942f1cd41d857a965",
+        measurementId: "G-G0HRRV932S"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const CACHE_KEY_POSTS = "boon_news_posts_cache";
+      const CACHE_KEY_AUTHORS = "boon_news_authors_cache";
+      const FALLBACK_IMG = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+
+      let allPosts = [];
+      let authorMap = new Map();
+
+      function getPostTime(post) {
+        if (!post.createdAt) return 0;
+        if (typeof post.createdAt === 'number') return post.createdAt;
+        if (typeof post.createdAt.toMillis === 'function') return post.createdAt.toMillis();
+        if (post.createdAt.seconds) return post.createdAt.seconds * 1000;
+        return new Date(post.createdAt).getTime() || 0;
+      }
+
+      function getPostViews(post) {
+        return Number(post.views || post.viewCount || 0);
+      }
+
+      function formatDate(post) {
+        const rawTime = getPostTime(post);
+        if (!rawTime) return '';
+        return new Date(rawTime).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      }
+
+      function getAuthorName(post) {
+        if (post.authorName) return post.authorName;
+        const key = post.authorId || post.author || post.authorRef;
+        if (key && authorMap.has(key)) return authorMap.get(key);
+        if (typeof post.author === 'string' && post.author.length > 0) return post.author;
+        return 'Editorial Desk';
+      }
+
+      window.navigateToArticle = (id) => {
+        window.location.href = `/reader.html?id=${id}`;
+      };
+
+      window.filterByCategory = (cat) => {
+          if (cat === 'ALL' || !cat) {
+              window.location.href = '/index.html';
+          } else {
+              window.location.href = `/category.html?c=${encodeURIComponent(cat)}`;
+          }
+      };
+
+      // Sidebar Navigation Toggle & Overlay Close Logic
+      const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+      const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+      const sidebarNav = document.getElementById('sidebarNav');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+      function openSidebar() {
+          sidebarNav.classList.add('active');
+          sidebarOverlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+      }
+
+      function closeSidebar() {
+          sidebarNav.classList.remove('active');
+          sidebarOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+      }
+
+      if (sidebarToggleBtn) {
+          sidebarToggleBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              openSidebar();
+          });
+      }
+
+      if (sidebarCloseBtn) {
+          sidebarCloseBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              closeSidebar();
+          });
+      }
+
+      if (sidebarOverlay) {
+          sidebarOverlay.addEventListener('click', closeSidebar);
+          sidebarOverlay.addEventListener('touchstart', closeSidebar, { passive: true });
+      }
+
+      // Search Drawer Toggle Logic
+      const searchToggleBtn = document.getElementById('searchToggleBtn');
+      const searchDrawer = document.getElementById('searchDrawer');
+      const searchInput = document.getElementById('searchInput');
+
+      if (searchToggleBtn && searchDrawer) {
+          searchToggleBtn.addEventListener('click', () => {
+              searchDrawer.classList.toggle('active');
+              if (searchDrawer.classList.contains('active') && searchInput) {
+                  searchInput.focus();
+              }
+          });
+      }
+
+      // Theme toggle implementation
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const currentTheme = localStorage.getItem('boon_theme') || 'light';
+
+      if (currentTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          if (themeIcon) themeIcon.classList.replace('fa-moon', 'fa-sun');
+      }
+
+      if (themeToggle) {
+          themeToggle.addEventListener('click', () => {
+              const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+              if (isDark) {
+                  document.documentElement.removeAttribute('data-theme');
+                  themeIcon.classList.replace('fa-sun', 'fa-moon');
+                  localStorage.setItem('boon_theme', 'light');
+              } else {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                  themeIcon.classList.replace('fa-moon', 'fa-sun');
+                  localStorage.setItem('boon_theme', 'dark');
+              }
+          });
+      }
+
+      // Reaction Counter Handler
+      window.handleReaction = (btn, event) => {
+          if (event) event.stopPropagation();
+          const icon = btn.querySelector('i');
+          const countSpan = btn.querySelector('span');
+          let count = parseInt(countSpan.textContent) || 0;
+
+          if (icon.classList.contains('fa-regular')) {
+              icon.classList.replace('fa-regular', 'fa-solid');
+              icon.style.color = '#ef4444';
+              countSpan.textContent = count + 1;
+          } else {
+              icon.classList.replace('fa-solid', 'fa-regular');
+              icon.style.color = '';
+              countSpan.textContent = Math.max(0, count - 1);
+          }
+      };
+
+      // Search Handler
+      function setupSearch() {
+        const searchForm = document.getElementById("searchForm");
+        const searchSuggestions = document.getElementById("searchSuggestions");
+
+        const executeSearch = (term) => {
+            if (term) window.location.href = `/searched.html?q=${encodeURIComponent(term)}`;
+        };
+
+        if (searchForm && searchInput) {
+            searchForm.addEventListener("submit", (e) => {
+              e.preventDefault();
+              executeSearch(searchInput.value.trim());
+            });
+
+            searchInput.addEventListener("input", (e) => {
+              const term = e.target.value.toLowerCase().trim();
+              if (!term || !searchSuggestions) {
+                if (searchSuggestions) {
+                    searchSuggestions.style.display = "none";
+                    searchSuggestions.innerHTML = "";
+                }
+                return;
+              }
+
+              const matches = allPosts.filter(post => {
+                const title = (post.title || "").toLowerCase();
+                const category = (post.category || "").toLowerCase();
+                const author = getAuthorName(post).toLowerCase();
+                return title.includes(term) || category.includes(term) || author.includes(term);
+              }).slice(0, 5);
+
+              if (matches.length === 0) {
+                searchSuggestions.innerHTML = `<div style="padding: 0.75rem; color: #64748b; font-size: 0.8rem;">No matches found. Press Enter to search.</div>`;
+              } else {
+                searchSuggestions.innerHTML = matches.map(post => `
+                  <div class="suggestion-item" onclick="navigateToArticle('${post.id}')">
+                    <img class="suggestion-thumb" src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+                    <div style="overflow: hidden;">
+                      <div style="font-weight: 700; font-size: 0.8rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${post.title}</div>
+                      <span class="text-accent" style="font-size: 0.65rem; text-transform: uppercase;">${post.category || 'News'}</span>
+                    </div>
+                  </div>
+                `).join('');
+              }
+              searchSuggestions.style.display = "block";
+            });
+
+            document.addEventListener("click", (e) => {
+              if (searchSuggestions && !searchForm.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.style.display = "none";
+              }
+            });
+        }
+      }
+
+      // Caching & Data Fetching Engine
+      async function initDataEngine() {
+        const cachedPosts = localStorage.getItem(CACHE_KEY_POSTS);
+        const cachedAuthors = localStorage.getItem(CACHE_KEY_AUTHORS);
+
+        if (cachedAuthors) {
+          try {
+            const arr = JSON.parse(cachedAuthors);
+            authorMap = new Map(arr);
+          } catch(e) {}
+        }
+
+        if (cachedPosts) {
+          try {
+            allPosts = JSON.parse(cachedPosts);
+            renderPage();
+            setupSearch();
+          } catch (e) {}
+        }
+
+        try {
+          const authorsPromise = getDocs(collection(db, "authors"));
+          const postsPromise = getDocs(query(collection(db, "newsPosts"), orderBy("createdAt", "desc"), limit(40)));
+
+          const [authorsSnap, postsSnap] = await Promise.all([authorsPromise, postsPromise]);
+
+          authorMap.clear();
+          authorsSnap.forEach(docSnap => {
+            const data = docSnap.data();
+            authorMap.set(docSnap.id, data.name || data.displayName || data.fullName || 'Editorial Desk');
+          });
+          localStorage.setItem(CACHE_KEY_AUTHORS, JSON.stringify(Array.from(authorMap.entries())));
+
+          const fetchedPosts = [];
+          postsSnap.forEach((docSnap) => {
+            const p = docSnap.data();
+            fetchedPosts.push({
+              id: docSnap.id,
+              title: p.title || '',
+              excerpt: p.excerpt || p.summary || '',
+              category: p.category || '',
+              imageUrl: p.imageUrl || '',
+              isFeatured: !!p.isFeatured,
+              postType: p.postType || 'standard',
+              views: p.views || p.viewCount || 0,
+              minutesRead: p.minutesRead || 3,
+              authorName: getAuthorName(p),
+              createdAt: getPostTime(p)
+            });
+          });
+
+          allPosts = fetchedPosts.sort((a, b) => getPostTime(b) - getPostTime(a));
+          localStorage.setItem(CACHE_KEY_POSTS, JSON.stringify(allPosts));
+
+          renderPage();
+          setupSearch();
+
+        } catch (err) {
+          console.error("Firestore revalidation error:", err);
+        }
+      }
+
+      function renderPage() {
+        renderHeroSection();
+        renderEditorsChoice();
+        renderNewsGrid();
+        renderStaggeredSection();
+        renderBriefs();
+        renderMagazine();
+        renderCarousel();
+        renderVideoFeed();
+        renderOpinions();
+      }
+
+      function renderHeroSection() {
+        const heroLeft = document.getElementById("heroLeftContainer");
+        const heroRight = document.getElementById("heroRightContainer");
+        if (!heroLeft || !heroRight) return;
+
+        const featuredPosts = allPosts.filter(p => p.isFeatured);
+        const displayPosts = featuredPosts.length > 0 ? featuredPosts : allPosts;
+
+        if (displayPosts.length === 0) return;
+
+        const mainPost = displayPosts[0];
+        const postDate = formatDate(mainPost);
+
+        heroLeft.setAttribute('onclick', `navigateToArticle('${mainPost.id}')`);
+        heroLeft.innerHTML = `
+          <img src="${mainPost.imageUrl || FALLBACK_IMG}" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${mainPost.title}" class="hero-left-bg">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h2 class="hero-title">${mainPost.title}</h2>
+            <div class="hero-meta">
+              <span class="hero-category">${mainPost.category || 'TOP STORY'}</span>
+              ${postDate ? `<span class="hero-dot-divider">•</span> <span>${postDate}</span>` : ''}
+            </div>
+          </div>
+        `;
+
+        const rightPosts = displayPosts.slice(1, 4);
+        heroRight.innerHTML = rightPosts.map((post, idx) => `
+          <div class="side-item" onclick="navigateToArticle('${post.id}')">
+            <div class="side-img-frame">
+              <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
+            </div>
+            <div>
+              <span style="font-size: 0.75rem; color: var(--accent-color); font-weight: 700;">#${idx + 1} ${post.category || 'TRENDING'}</span>
+              <h4 class="side-item-title">${post.title}</h4>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderEditorsChoice() {
+        const container = document.getElementById("editorsChoiceContainer");
+        if (!container) return;
+
+        let items = allPosts.filter(p => p.postType === 'editor-choice');
+        if (items.length === 0) items = allPosts.slice(3, 5);
+
+        container.innerHTML = items.map(post => `
+          <div class="opinion-item" onclick="navigateToArticle('${post.id}')">
+            <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}" class="author-avatar">
+            <div class="opinion-body">
+              <span class="author-name">${getAuthorName(post)}</span>
+              <h4 class="opinion-quote">${post.title}</h4>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderNewsGrid() {
+        const container = document.getElementById("newsGrid");
+        if (!container) return;
+
+        const displayItems = allPosts.slice(0, 6);
+
+        if (displayItems.length === 0) {
+            container.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted); text-align: center; padding: 2rem;">No stories found.</p>`;
+            return;
+        }
+
+        container.innerHTML = displayItems.map(post => `
+          <article class="card" onclick="navigateToArticle('${post.id}')">
+            <div class="card-img-wrapper">
+              <span class="badge">${post.category || 'News'}</span>
+              <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}" class="card-img">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">${post.title}</h3>
+              <p class="card-excerpt">${post.excerpt || 'Click to read full story and updates...'}</p>
+              <div class="card-footer">
+                <span>${post.minutesRead || 3} mins read</span>
+                <div class="reactions">
+                  <button class="reaction-btn" onclick="handleReaction(this, event)">
+                    <i class="fa-regular fa-heart"></i> <span>${getPostViews(post) > 0 ? Math.floor(getPostViews(post) / 3) : 12}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      function renderStaggeredSection() {
+        const container = document.getElementById("staggeredContainer");
+        if (!container || allPosts.length < 3) return;
+
+        const main = allPosts[1] || allPosts[0];
+        const sub1 = allPosts[2] || allPosts[0];
+        const sub2 = allPosts[3] || allPosts[0];
+
+        container.innerHTML = `
+          <article class="staggered-large" onclick="navigateToArticle('${main.id}')">
+            <img src="${main.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${main.title}">
+            <div class="card-body">
+              <span class="badge">${main.category || 'Deep Dive'}</span>
+              <h3 class="card-title" style="font-size: 1.3rem; margin-top: 8px;">${main.title}</h3>
+              <p class="card-excerpt">${main.excerpt || 'Explore comprehensive analysis and detailed perspectives.'}</p>
+              <div class="card-footer">
+                <span>${main.minutesRead || 5} mins read</span>
+                <span>By ${getAuthorName(main)}</span>
+              </div>
+            </div>
+          </article>
+
+          <div class="staggered-sub-grid">
+            <article class="side-item" onclick="navigateToArticle('${sub1.id}')">
+              <div>
+                <span class="badge">${sub1.category || 'Analysis'}</span>
+                <h4 class="side-item-title" style="margin-top: 6px;">${sub1.title}</h4>
+              </div>
+            </article>
+
+            <article class="side-item" onclick="navigateToArticle('${sub2.id}')">
+              <div>
+                <span class="badge">${sub2.category || 'Insight'}</span>
+                <h4 class="side-item-title" style="margin-top: 6px;">${sub2.title}</h4>
+              </div>
+            </article>
+          </div>
+        `;
+      }
+
+      function renderBriefs() {
+        const container = document.getElementById("briefsContainer");
+        if (!container) return;
+
+        const briefs = allPosts.slice(0, 3);
+        container.innerHTML = briefs.map((post, idx) => `
+          <li class="brief-item" onclick="navigateToArticle('${post.id}')">
+            <span class="brief-num">${idx + 1}</span>
+            <div class="brief-text">${post.title}</div>
+          </li>
+        `).join('');
+      }
+
+      function renderMagazine() {
+        const container = document.getElementById("magazineContainer");
+        if (!container || allPosts.length < 3) return;
+
+        const feature = allPosts[4] || allPosts[0];
+        const mini1 = allPosts[5] || allPosts[1];
+        const mini2 = allPosts[6] || allPosts[2];
+
+        container.innerHTML = `
+          <article class="magazine-feature" onclick="navigateToArticle('${feature.id}')">
+            <img src="${feature.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${feature.title}">
+            <div class="hero-overlay"></div>
+            <div class="magazine-feature-content">
+              <span class="badge" style="background: var(--accent-color); color: #fff;">${feature.category || 'Culture'}</span>
+              <h3 style="font-size: 1.3rem; font-weight: 700; margin-top: 6px;">${feature.title}</h3>
+            </div>
+          </article>
+
+          <div class="magazine-stack">
+            <div class="magazine-mini" onclick="navigateToArticle('${mini1.id}')">
+              <img src="${mini1.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${mini1.title}">
+              <div>
+                <span style="font-size: 0.75rem; color: var(--accent-color); font-weight: 700;">${mini1.category || 'SPOTLIGHT'}</span>
+                <h4 style="font-size: 0.95rem; font-weight: 700;">${mini1.title}</h4>
+              </div>
+            </div>
+
+            <div class="magazine-mini" onclick="navigateToArticle('${mini2.id}')">
+              <img src="${mini2.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${mini2.title}">
+              <div>
+                <span style="font-size: 0.75rem; color: var(--accent-color); font-weight: 700;">${mini2.category || 'TREND'}</span>
+                <h4 style="font-size: 0.95rem; font-weight: 700;">${mini2.title}</h4>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderCarousel() {
+        const container = document.getElementById("carouselContainer");
+        if (!container) return;
+
+        const items = allPosts.slice(0, 8);
+        container.innerHTML = items.map(post => `
+          <article class="carousel-card" onclick="navigateToArticle('${post.id}')">
+            <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}" class="carousel-img">
+            <div class="carousel-body">
+              <span class="badge">${post.category || 'Trending'}</span>
+              <h4 class="carousel-title">${post.title}</h4>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      function renderVideoFeed() {
+        const container = document.getElementById("videoContainer");
+        if (!container) return;
+
+        let videos = allPosts.filter(p => p.postType === 'video');
+        if (videos.length === 0) videos = allPosts.slice(0, 3);
+
+        container.innerHTML = videos.slice(0, 3).map(video => `
+          <div class="video-card" onclick="navigateToArticle('${video.id}')">
+            <div class="video-thumb">
+              <img src="${video.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${video.title}">
+              <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+            </div>
+            <div class="video-info">
+              <h4 class="video-title">${video.title}</h4>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderOpinions() {
+        const container = document.getElementById("opinionContainer");
+        if (!container) return;
+
+        let opinions = allPosts.filter(p => p.category === 'Opinion');
+        if (opinions.length === 0) opinions = allPosts.slice(0, 2);
+
+        container.innerHTML = opinions.slice(0, 2).map(post => `
+          <div class="opinion-item" onclick="navigateToArticle('${post.id}')">
+            <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="Author" class="author-avatar">
+            <div class="opinion-body">
+              <span class="author-name">${getAuthorName(post)}</span>
+              <h4 class="opinion-quote">${post.title}</h4>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      initDataEngine();
+    </script>
+</body>
+</html>
