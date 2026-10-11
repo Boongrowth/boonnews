@@ -1,0 +1,37 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/article/:slugOrId",
+      "destination": "/api/reader"
+    },
+    {
+      "source": "/reader",
+      "destination": "/api/reader"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/category/:c",
+      "destination": "/category.html"
+    },
+    {
+      "source": "/search",
+      "destination": "/searched.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
