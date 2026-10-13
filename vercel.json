@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/article/:slugOrId",
+      "source": "/article/(.*)",
       "destination": "/api/reader"
     },
     {
@@ -14,7 +14,7 @@
       "destination": "/api/sitemap"
     },
     {
-      "source": "/category/:c",
+      "source": "/category/(.*)",
       "destination": "/category.html"
     },
     {
