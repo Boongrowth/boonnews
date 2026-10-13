@@ -1,5 +1,3 @@
-// /api/sitemap.js
-
 export default async function handler(req, res) {
   const BASE_URL = "https://boonnewsng.blog";
   const FIREBASE_PROJECT_ID = "primeintelmedia-e2fe3";
