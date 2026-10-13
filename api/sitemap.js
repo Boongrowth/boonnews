@@ -1,3 +1,5 @@
+// /api/sitemap.js
+
 export default async function handler(req, res) {
   const BASE_URL = "https://boonnewsng.blog";
   const FIREBASE_PROJECT_ID = "primeintelmedia-e2fe3";
@@ -16,6 +18,8 @@ export default async function handler(req, res) {
     }
 
     const currentDate = new Date().toISOString();
+    const twoDaysInMs = 48 * 60 * 60 * 1000;
+    const nowMs = new Date().getTime();
 
     // 2. Clean static routes (No .html extensions, single homepage canonical)
     const staticPages = [
@@ -39,13 +43,13 @@ export default async function handler(req, res) {
       )
       .join("");
 
-    // 4. Build XML entries for dynamic Firestore newsPosts using clean slugs and Google News schema
+    // 4. Build XML entries for dynamic Firestore newsPosts using clean slugs
     articles.forEach((doc) => {
       const id = doc.name.split("/").pop();
       const fields = doc.fields || {};
 
       let lastMod = currentDate;
-      let pubDate = currentDate;
+      let pubDateObj = new Date();
 
       if (fields.updatedAt?.timestampValue) {
         lastMod = new Date(fields.updatedAt.timestampValue).toISOString();
@@ -54,8 +58,15 @@ export default async function handler(req, res) {
       }
 
       if (fields.createdAt?.timestampValue) {
-        pubDate = new Date(fields.createdAt.timestampValue).toISOString();
+        pubDateObj = new Date(fields.createdAt.timestampValue);
+      } else if (fields.updatedAt?.timestampValue) {
+        pubDateObj = new Date(fields.updatedAt.timestampValue);
       }
+
+      const pubDate = pubDateObj.toISOString();
+      
+      // Google News 48-hour freshness rule check
+      const isRecentNews = (nowMs - pubDateObj.getTime()) <= twoDaysInMs;
 
       // Prioritize slug field, fallback to document ID
       const slugOrId = fields.slug?.stringValue || id;
@@ -68,7 +79,8 @@ export default async function handler(req, res) {
     <loc>${escapeXml(articleUrl)}</loc>
     <lastmod>${lastMod}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.8</priority>${
+      isRecentNews ? `
     <news:news>
       <news:publication>
         <news:name>Boon News</news:name>
@@ -76,7 +88,8 @@ export default async function handler(req, res) {
       </news:publication>
       <news:publication_date>${pubDate}</news:publication_date>
       <news:title>${escapeXml(title)}</news:title>
-    </news:news>${
+    </news:news>` : ""
+    }${
       imageUrl ? `
     <image:image>
       <image:loc>${escapeXml(imageUrl)}</image:loc>
