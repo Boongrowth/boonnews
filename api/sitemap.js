@@ -39,16 +39,22 @@ export default async function handler(req, res) {
       )
       .join("");
 
-    // 4. Build XML entries for dynamic Firestore newsPosts using clean slugs
+    // 4. Build XML entries for dynamic Firestore newsPosts using clean slugs and Google News schema
     articles.forEach((doc) => {
       const id = doc.name.split("/").pop();
       const fields = doc.fields || {};
 
       let lastMod = currentDate;
+      let pubDate = currentDate;
+
       if (fields.updatedAt?.timestampValue) {
         lastMod = new Date(fields.updatedAt.timestampValue).toISOString();
       } else if (fields.createdAt?.timestampValue) {
         lastMod = new Date(fields.createdAt.timestampValue).toISOString();
+      }
+
+      if (fields.createdAt?.timestampValue) {
+        pubDate = new Date(fields.createdAt.timestampValue).toISOString();
       }
 
       // Prioritize slug field, fallback to document ID
@@ -62,7 +68,15 @@ export default async function handler(req, res) {
     <loc>${escapeXml(articleUrl)}</loc>
     <lastmod>${lastMod}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>${
+    <priority>0.8</priority>
+    <news:news>
+      <news:publication>
+        <news:name>Boon News</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${escapeXml(title)}</news:title>
+    </news:news>${
       imageUrl ? `
     <image:image>
       <image:loc>${escapeXml(imageUrl)}</image:loc>
