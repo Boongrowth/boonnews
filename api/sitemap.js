@@ -1,5 +1,3 @@
-// /api/sitemap.js
-
 export default async function handler(req, res) {
   const BASE_URL = "https://boonnewsng.blog";
   const FIREBASE_PROJECT_ID = "primeintelmedia-e2fe3";
@@ -24,7 +22,6 @@ export default async function handler(req, res) {
       { url: `${BASE_URL}`, priority: "1.0", changefreq: "always", lastmod: currentDate },
       { url: `${BASE_URL}/about`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/contact`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
-      { url: `${BASE_URL}/category`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/privacy`, priority: "0.3", changefreq: "monthly", lastmod: currentDate },
       { url: `${BASE_URL}/terms`, priority: "0.3", changefreq: "monthly", lastmod: currentDate }
     ];
@@ -42,7 +39,7 @@ export default async function handler(req, res) {
       )
       .join("");
 
-    // 4. Build XML entries for dynamic Firestore newsPosts
+    // 4. Build XML entries for dynamic Firestore newsPosts using clean slugs
     articles.forEach((doc) => {
       const id = doc.name.split("/").pop();
       const fields = doc.fields || {};
@@ -54,10 +51,11 @@ export default async function handler(req, res) {
         lastMod = new Date(fields.createdAt.timestampValue).toISOString();
       }
 
-      // Clean reader URL matching your Vercel Edge rewrite rule
-      const articleUrl = `${BASE_URL}/reader?id=${id}`;
-      const title = fields.title?.stringValue || "BoonNews Article";
-      const imageUrl = fields.image?.stringValue || fields.thumbnail?.stringValue || "";
+      // Prioritize slug field, fallback to document ID
+      const slugOrId = fields.slug?.stringValue || id;
+      const articleUrl = `${BASE_URL}/article/${slugOrId}`;
+      const title = fields.title?.stringValue || "Boon News Article";
+      const imageUrl = fields.imageUrl?.stringValue || fields.image?.stringValue || fields.thumbnail?.stringValue || "";
 
       urlsXml += `
   <url>
