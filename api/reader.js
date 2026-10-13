@@ -18,8 +18,8 @@ export default async function handler(request) {
   const baseUrl = 'https://boonnewsng.blog';
   const firebaseProjectId = 'primeintelmedia-e2fe3';
 
-  // 1. Fetch static reader.html template
-  const htmlResponse = await fetch(`${baseUrl}/reader.html`);
+  // 1. Fetch template via extensionless route to strictly prevent Vercel 308 cleanUrls redirects
+  const htmlResponse = await fetch(`${baseUrl}/reader`);
   let html = await htmlResponse.text();
 
   // Return base template if no identifier is present in URL
