@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category | Boon News</title>
+    <title id="pageTitle">Category | Boon News</title>
     <meta name="robots" content="index, follow">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
@@ -69,7 +69,7 @@
         <nav class="pagination-bar" id="paginationBar" style="display: none;"></nav>
     </main>
 
-  <footer>
+    <footer>
         <div class="footer-logo-container">
             <a href="/" aria-label="Boon News Homepage">
                 <img src="/assets/images/logo.png" alt="Boon News Logo" class="footer-logo-img">
@@ -130,14 +130,25 @@
         });
       }
 
-      function navigateToArticle(id) {
-        window.location.href = `/read?id=${id}`;
+      function navigateToArticle(slugOrId) {
+        window.location.href = `/article/${slugOrId}`;
       }
       window.navigateToArticle = navigateToArticle;
 
+      // Extract Category from clean path (/category/politics) or fallback query (?c=politics)
       function getCategoryFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('c') || params.get('category') || 'General';
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        let rawCat = '';
+
+        if (pathParts[0] === 'category' && pathParts[1]) {
+            rawCat = decodeURIComponent(pathParts[1]);
+        } else {
+            const params = new URLSearchParams(window.location.search);
+            rawCat = params.get('c') || params.get('category') || 'General';
+        }
+
+        // Standardize clean category slugs (e.g. "tech-and-science" -> "Tech and Science")
+        return rawCat.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       }
 
       // Sidebar Event Listeners
@@ -212,7 +223,7 @@
 
         if (topHeroPost) {
             html += `
-              <article class="featured-hero-card" onclick="navigateToArticle('${topHeroPost.id}')">
+              <article class="featured-hero-card" onclick="navigateToArticle('${topHeroPost.slug || topHeroPost.id}')">
                 <div class="hero-img-frame">
                   <img src="${topHeroPost.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${topHeroPost.title}">
                 </div>
@@ -230,7 +241,7 @@
             html += `<div class="posts-two-grid">`;
             topGridPosts.forEach(post => {
                 html += `
-                  <article class="grid-card" onclick="navigateToArticle('${post.id}')">
+                  <article class="grid-card" onclick="navigateToArticle('${post.slug || post.id}')">
                     <div class="grid-img-frame">
                       <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
                     </div>
@@ -250,7 +261,7 @@
             html += `<ul class="mini-post-list">`;
             bottomListPosts.forEach(post => {
                 html += `
-                  <li class="mini-post-item" onclick="navigateToArticle('${post.id}')">
+                  <li class="mini-post-item" onclick="navigateToArticle('${post.slug || post.id}')">
                     <div class="mini-img-frame">
                       <img src="${post.imageUrl || FALLBACK_IMG}" loading="lazy" onerror="this.onerror=null; this.src='${FALLBACK_IMG}';" alt="${post.title}">
                     </div>
@@ -324,10 +335,13 @@
         )];
 
         let html = uniqueCats.map(cat => {
-            const isCurrent = cat.toLowerCase() === targetCategory.trim().toLowerCase();
+            const cleanCatSlug = cat.toLowerCase().replace(/\s+/g, '-');
+            const targetCleanSlug = targetCategory.trim().toLowerCase().replace(/\s+/g, '-');
+            const isCurrent = cleanCatSlug === targetCleanSlug;
+
             return `
               <li class="sidebar-nav-item">
-                <a href="/category?c=${encodeURIComponent(cat)}" style="${isCurrent ? 'color: var(--accent-color); font-weight:700;' : ''}">
+                <a href="/category/${encodeURIComponent(cleanCatSlug)}" style="${isCurrent ? 'color: var(--accent-color); font-weight:700;' : ''}">
                   <i class="fa-solid fa-folder"></i> ${cat}
                 </a>
               </li>
@@ -356,6 +370,7 @@
                 const p = docSnap.data();
                 allFetched.push({
                     id: docSnap.id,
+                    slug: p.slug || '',
                     title: p.title || 'Untitled',
                     category: (p.category || 'General').trim(),
                     imageUrl: p.imageUrl || '',
@@ -365,9 +380,12 @@
 
             populateSidebarCategories(allFetched);
 
-            categoryPosts = allFetched.filter(p => 
-                p.category.toLowerCase() === targetCategory.trim().toLowerCase()
-            );
+            const targetNormalized = targetCategory.trim().toLowerCase().replace(/-/g, ' ');
+
+            categoryPosts = allFetched.filter(p => {
+                const postCatNormalized = p.category.toLowerCase().replace(/-/g, ' ');
+                return postCatNormalized === targetNormalized;
+            });
 
             document.getElementById('categoryCountText').textContent = `${categoryPosts.length} ${categoryPosts.length === 1 ? 'story' : 'stories'} published`;
             
