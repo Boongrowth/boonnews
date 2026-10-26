@@ -18,8 +18,8 @@ export default async function handler(request) {
   const baseUrl = 'https://boonnewsng.blog';
   const firebaseProjectId = 'primeintelmedia-e2fe3';
 
-  // 1. Fetch static template file explicitly to work seamlessly with cleanUrls: false
-  const htmlResponse = await fetch(`${baseUrl}/reader.html`);
+  // 1. Fetch static template dynamically using incoming request origin
+  const htmlResponse = await fetch(`${url.origin}/reader.html`);
   let html = await htmlResponse.text();
 
   // Return base template if no identifier is present in URL
