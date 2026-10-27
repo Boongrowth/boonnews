@@ -1,9 +1,13 @@
-export default async function handler(req, res) {
+export const config = {
+  runtime: 'edge', // Runs on Vercel Edge network for instant responses
+};
+
+export default async function handler(request) {
   const BASE_URL = "https://boonnewsng.blog";
   const FIREBASE_PROJECT_ID = "primeintelmedia-e2fe3";
 
   try {
-    // 1. Fetch news posts using Firestore REST API directly
+    // 1. Fetch news posts using Firestore REST API
     const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/newsPosts?pageSize=300`;
     const response = await fetch(firestoreUrl);
     
@@ -19,7 +23,7 @@ export default async function handler(req, res) {
     const twoDaysInMs = 48 * 60 * 60 * 1000;
     const nowMs = new Date().getTime();
 
-    // 2. Clean static routes (No .html extensions, single homepage canonical)
+    // 2. Clean static routes (Apex domain, no .html extensions)
     const staticPages = [
       { url: `${BASE_URL}`, priority: "1.0", changefreq: "always", lastmod: currentDate },
       { url: `${BASE_URL}/about`, priority: "0.5", changefreq: "monthly", lastmod: currentDate },
@@ -69,8 +73,11 @@ export default async function handler(req, res) {
       // Prioritize slug field, fallback to document ID
       const slugOrId = fields.slug?.stringValue || id;
       const articleUrl = `${BASE_URL}/article/${slugOrId}`;
-      const title = fields.title?.stringValue || "Boon News Article";
-      const imageUrl = fields.imageUrl?.stringValue || fields.image?.stringValue || fields.thumbnail?.stringValue || "";
+      
+      // Clean title from HTML tags before escaping
+      const rawTitle = (fields.title?.stringValue || "Boon News Article").replace(/<[^>]*>/g, '');
+      const title = escapeXml(rawTitle);
+      const imageUrl = escapeXml(fields.imageUrl?.stringValue || fields.image?.stringValue || fields.thumbnail?.stringValue || "");
 
       urlsXml += `
   <url>
@@ -85,13 +92,13 @@ export default async function handler(req, res) {
         <news:language>en</news:language>
       </news:publication>
       <news:publication_date>${pubDate}</news:publication_date>
-      <news:title>${escapeXml(title)}</news:title>
+      <news:title>${title}</news:title>
     </news:news>` : ""
     }${
       imageUrl ? `
     <image:image>
-      <image:loc>${escapeXml(imageUrl)}</image:loc>
-      <image:title>${escapeXml(title)}</image:title>
+      <image:loc>${imageUrl}</image:loc>
+      <image:title>${title}</image:title>
     </image:image>` : ""
     }
   </url>`;
@@ -105,17 +112,18 @@ export default async function handler(req, res) {
 ${urlsXml}
 </urlset>`.trim();
 
-    // 6. Return XML response with headers
-    res.setHeader("Content-Type", "text/xml; charset=utf-8");
-    res.setHeader(
-      "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=86400"
-    );
-    return res.status(200).send(xmlContent);
+    // 6. Return standard Edge Response
+    return new Response(xmlContent, {
+      status: 200,
+      headers: {
+        "content-type": "text/xml; charset=utf-8",
+        "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400"
+      }
+    });
 
   } catch (error) {
     console.error("Error generating sitemap:", error);
-    return res.status(500).send("Error generating sitemap");
+    return new Response("Error generating sitemap", { status: 500 });
   }
 }
 
